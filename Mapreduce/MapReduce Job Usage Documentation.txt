@@ -1,0 +1,247 @@
+All the below MapReduce Programs for processing structured and unstructured data.
+
+We have two MapReduce APIs available with MapReduce Framework, We can use any one of them. 
+Old API supports all library but New API has yet to implement some of the library like chain mappers and reducers etc. 
+Majority of the below programs are written in New API, a few programs are written in Old API.
+
+All the classes from New API having prefix like org.apache.hadoop.mapreduce.
+All the classes from Old API having prefix like org.apache.hadoop.mapred.
+
+For every program, we have three classes 
+Main Class (name of the class which having driver method i.e main method)
+Mapper class to Implement the Map side Business Logic
+Reducer class to implement the Reducer side business Logic.
+
+We can write MapReduce program in two ways.
+1. All the three classes together
+2. Three Individual classes
+
+Approach One:
+Main class
+{
+  Driver Method
+	{
+	}
+	Mapper Class
+	{
+	}
+	Reducer Class
+	{
+	}
+}
+Approach Two:
+Main Class
+{
+	Driver Method
+	{
+	}
+}
+Mapper Class
+{
+}
+Reducer Class
+{
+}
+
+The below classes are available in MapReduce program list which I shared.
+
+MapReduce Template for New API:
+
+NewAPIMRTemplate.java
+
+MapReduce Template for Old API:
+
+OldAPIMRTemplate.java
+
+Note:    mapkeyout == reducekeyin
+	 mapvalueout == reducevaluein
+
+All these keyin, keyout, valuein, valueout are hadoop data types like IntWritable, LongWritable, Text etc. 
+These are available in org.apache.hadoop.io package.
+=========================================================================================================================
+
+We categorized all the programs into a few groups based on their purpose.
+Data Aggregation
+Indexing
+Searching
+Clustering
+Text Analysis
+
+Data Aggregation:
+
+In this category, we are going to do basic data aggregation problems by using simple statistics.
+
+Input Data set is Newyork Stock Exchange sample data.
+
+Download the data from this link: https://raw.github.com/alanfgates/programmingpig/master/data/NYSE_daily
+
+cmd> mv NYSE_daily stocks
+
+This data set is tab separated one, having 9 columns. 
+The columns are exchange name, stock name, date, open, high, low, close, volume, adj_close.
+
+Data Laoding into HDFS:
+
+create the directory in HDFS:
+cmd> hadoop fs -mkdir /markets
+cmd> hadoop fs -put stocks /markets/stocks
+cmd> hadoop fs -ls /markets
+=========================================================================================================================
+
+1. MapReduce Job One:
+
+Objective: Finding the Aggregated Volume of every stock for the entire data set. 
+
+Using New API:
+
+Java Source Code:
+
+StockTotalVolume.java
+
+compile and build jar file by using Eclipse or Manually. This process is same for all MapReduce Jobs.
+
+Using Eclipse:
+
+Right Click on class Name.
+Select export -> java -> jarfile
+Choose jar file name and finish.
+
+Manually:
+
+cmd> javac -d StockTotalVolume.java
+cmd> jar -cvf  stocktotalvolume.jar -C ./twok.hadoop.mapreduce  stocktotalvolume*.class
+
+Job Submision to Hadoop OR Usage:
+
+cmd> hadoop jar stocktotalvolume.jar twok.hadoop.mapreduce.StockTotalVolume /markets/stocks /markets/volume
+
+Using Old API:
+
+Java Source Code:
+
+OldAPIStocksTotalVolume.java
+
+Job Submision to Hadoop OR Usage:
+
+cmd> hadoop jar oldapistockvolume.jar twok.hadoop.mapreduce.OldAPIStocksTotalVolume /markets/stocks /markets/volume1
+=====================================================================================================================
+2. MapReduce Job Two:
+
+Objective: This job is finding the change in the stock value for the day i.e close – open for every stock on every day.
+
+Java Source Code:
+
+StockChangePerDay.java
+
+Job Submision to Hadoop OR Usage:
+
+cmd> hadoop jar stockchange.jar twok.hadoop.mapreduce.StockChangePerDay  /markets/stocks /markets/change
+=========================================================================================================================
+
+3. MapReduce Job Three:
+
+Objective: The MapReduce job is for finding the total no of times per every stock.
+
+Java Source Code:
+
+StockCount.java
+
+Job Submision to Hadoop OR Usage:
+
+cmd> hadoop jar stockcount.jar twok.hadoop.mapreduce.StockCount  /markets/stocks /markets/count
+=========================================================================================================================
+
+4. MapReduce Job Four: 
+
+
+This MapReduce program is for finding the min and max of open, high, low, close by passing job specific configuration
+parameters ( Making Dynamic program for same business logic with different input data columns...)
+
+Java Source Code:
+
+StocksMinMaxOHLC.java
+
+Job Submision to Hadoop OR Usage:
+
+Usage is: hadoop jar jarfile MainClass input output parameter[open | high | low | close ]
+
+cmd> hadoop jar stockminmaxohlc.jar twok.hadoop.mapreduce.StocksMinMaxOHLC  /markets/stocks /markets/open open
+
+cmd> hadoop jar stockminmaxohlc.jar twok.hadoop.mapreduce.StocksMinMaxOHLC  /markets/stocks /markets/high high
+
+cmd> hadoop jar stockminmaxohlc.jar twok.hadoop.mapreduce.StocksMinMaxOHLC  /markets/stocks /markets/low low
+
+cmd> hadoop jar stockminmaxohlc.jar twok.hadoop.mapreduce.StocksMinMaxOHLC  /markets/stocks /markets/close close
+=========================================================================================================================
+
+5. MapReduce Job Five: 
+
+This MapReduce program is for finding the sum and average volume of the every stock for the entire data set.
+
+Java Source Code: 
+
+StockVolumeAvgSum.java
+
+Job Submision to Hadoop OR Usage:
+
+cmd> hadoop jar stockvolumeavgsum.jar twok.hadoop.mapreduce.StockVolumeAvgSum  /markets/stocks /markets/avgsum
+==========================================================================================================================
+
+MapReduce Job Six: 
+
+This program is for Fidning the mix and max of open, high, close, low, adj_close, volume as 
+single report by using StockWritable Custom Data Type
+
+Java Source Code:
+
+StockWritable DataType:
+
+StockWritable.java
+
+StockMinMaxAll.java
+
+Job Submision to Hadoop OR Usage:
+
+cmd> javac -d StockWritable.java
+cmd> jar -cvf stockwritable.jar -C ./com/hadoop/mapreduce StockWritable.class
+cmd> cp stockwritable.jar $HADOOP_HOME/lib.
+Cmd> stop-all.sh
+cmd> start-all.sh
+
+cmd> hadoop jar stockminmaxall.jar twok.hadoop.mapreduce.StockMiMaxAll  /markets/stocks /markets/report
+========================================================================================================================
+
+MapReduce Job Seven: 
+
+This MapReduce program is for finding the min and max of open, high, low, close of every stock 
+(Same as MapReduce job Four) by using Second Approach.
+
+Java Source Code:
+
+StockMinMaxMain.java:
+
+StockMinMaxMapper.java:
+
+StockMinMaxReducer.java
+
+Job Submision to Hadoop OR Usage:
+
+Usage is: hadoop jar jarfile MainClass input output parameter[open | high | low | close ]
+
+cmd> hadoop jar stockminmax.jar twok.hadoop.mapreduce.StockMinMaxMain  /markets/stocks /markets/open open
+
+cmd> hadoop jar stockminmax.jar twok.hadoop.mapreduce.StockMinMaxMain  /markets/stocks /markets/high high
+
+cmd> hadoop jar stockminmax.jar twok.hadoop.mapreduce.StockMinMaxMain  /markets/stocks /markets/low low
+
+cmd> hadoop jar stockminmax.jar twok.hadoop.mapreduce.StockMinMaxMain  /markets/stocks /markets/close close
+=========================================================================================================================
+
+
+
+
+
+
+
+
+Kmeans Clustering Algorithm: It is useful to cluster the n data points into k clusters based on the distance measure.
