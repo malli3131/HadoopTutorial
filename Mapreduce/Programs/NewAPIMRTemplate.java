@@ -38,7 +38,7 @@ public class NewAPIMRTemplate {
 	{
 		Configuration conf = new Configuration();
 		
-		Job job = new Job(conf, "Finding the total stock vollumes");
+		Job job = new Job(conf, "Finding the total stock volumes");
 		
 		job.setJarByClass(NewAPIMRTemplate.class);
 		
