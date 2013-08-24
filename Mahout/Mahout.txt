@@ -1,0 +1,85 @@
+Mahout Introduction:
+It is a Machine Learning Framework on top of Apache Hadoop.
+It has a list of Distributed and and Non-Distributed Algorithms
+
+It supports three types of Machine Learning Algorithms
+
+	1. Classification
+	2. Clustering
+	3. Recommendation
+	
+=============================
+Mahout Installation:
+--------------------
+Download the Mahout binaries from Apache Mahout Website;
+Extract the Mahout tar file to directory;
+Copy the directory Some location like /yourpath/mahout-0.x.x/
+export MAHOUT_HOME= /yourpath/mahout-0.x.x/
+
+Mahout runs in Two Modes
+	
+	1. In Distributed Mode i.e. On Hadoop
+	2. In Local Mode i.e. Non distributed mode.
+=========================================================
+Running Mahout in Distributed Mode:
+export HADOOP_HOME= Path of the Hadoop Installation Directory
+export PATH=$PATH:$MAHOUT_HOME/bin
+Type mahout
+
+	we will info like mahout is running on hadoop and a list of available algorithms.
+	
+Running Basian Classifier by using 20 news group dataset:
+---------------------------------------------------------
+Data Preparation
+------------------
+mahout prepare20newsgroups -a org.apache.mahout.vectorizer.DefaultAnalyzer -c UTF-8 --outputDir 20news/train -p 20news-bydate-train 
+mahout prepare20newsgroups -a org.apache.mahout.vectorizer.DefaultAnalyzer -c UTF-8 --outputDir 20news/test -p 20news-bydate-test/ 
+==========================
+hadoop fs -rmr /20news 
+hadoop fs -mkdir /20news 
+hadoop fs -put train/ /20news/ 
+hadoop fs -put test/ /20news/ 
+hadoop fs -rmr /20news/model 
+mahout trainclassifier -i /20news/train/ -o /20news/model -type bayes -ng 1 -source hdfs 
+mahout testclassifier -m /20news/model -d /20news/test -type bayes -ng 1 -source hdfs 
+mahout prepare20newsgroups -a org.apache.mahout.vectorizer.DefaultAnalyzer -c UTF-8 --outputDir 20news/train -p 20news-bydate-train 
+mahout prepare20newsgroups -a org.apache.mahout.vectorizer.DefaultAnalyzer -c UTF-8 --outputDir 20news/test -p 20news-bydate-test/ 
+
+Running Complementory Basian Classifier by using 20 news group dataset:
+-----------------------------------------------------------------------
+hadoop fs -rmr /20news 
+hadoop fs -mkdir /20news 
+hadoop fs -put train/ /20news/ 
+hadoop fs -put test/ /20news/ 
+hadoop fs -rmr /20news/model 
+mahout trainclassifier -i /20news/train/ -o /20news/model -type cbayes -ng 1 -source hdfs 
+mahout testclassifier -m /20news/model -d /20news/test -type cbayes -ng 1 -source hdfs
+ 
+mahout dirichlet -i /genpact/clustering/data/reuters-sparse/tfidf-vectors -o /genpact/clustering/dirichlet/reuters-dirichlet -k 20 -ow -x 20 -a0 2 -md org.apache.mahout.clustering.dirichlet.models.DistanceMeasureClusterDistribution -mp org.apache.mahout.math.DenseVector -dm org.apache.mahout.common.distance.CosineDistanceMeasure 
+#mahout org.apache.lucene.benchmark.utils.ExtractReuters reuters reuters-out 
+#export MAHOUT_LOCAL=$PWD 
+#mahout seqdirectory reuters-out/ reuters-seq 
+#mahout seqdirectory -i reuters-out/ -o reuters-seq -c UTF-8 -ow 
+#export MAHOUT_LOCAL= 
+hadoop fs -rmr /genpact/clustering 
+hadoop fs -mkdir /genpact/clustering 
+hadoop fs -put reuters-seq/ /genpact/clustering/ 
+mahout seq2sparse -i /genpact/clustering/reuters-seq/ -o /genpact/clustering/reuters-out-seqdir-sparse-fkmeans --maxDFPercent 85 --namedVector 
+mahout fkmeans -i /genpact/clustering/reuters-out-seqdir-sparse-fkmeans/tfidf-vectors/ -c /genpact/clustering/reuters-kmeans-clusters -o /genpact/reuters-kmeans/ -dm org.apache.mahout.common.distance.CosineDistanceMeasure -x 10 -k 20 -ow --clustering 
+mahout clusterdump -s /genpact/clusterin/reuters-kmeans/clusters-*-final -d /genpact/clustering/reuters-out-seqdir-sparse-kmeans/dictionary.file-0 -dt sequencefile -b 100 -n 20 --evaluate -dm org.apache.mahout.common.distance.CosineDistanceMeasure --pointsDir /genpact/clustering/reuters-kmeans/clusteredPoints 
+mahout org.apache.lucene.benchmark.utils.ExtractReuters reuters reuters-out 
+export MAHOUT_LOCAL=$PWD 
+mahout seqdirectory reuters-out/ reuters-seq 
+mahout seqdirectory -i reuters-out/ -o reuters-seq -c UTF-8 -ow 
+export MAHOUT_LOCAL= 
+hadoop fs -rmr /genpact 
+hadoop fs -mkdir /genpact 
+hadoop fs -put reuters-seq/ /genpact/ 
+mahout seq2sparse -i /genpact/reuters-seq/ -o reuters-out-seqdir-sparse-kmeans --maxDFPercent 85 --namedVector 
+mahout kmeans -i /genpact/reuters-out-seqdir-sparse-kmeans/tfidf-vectors/ -c /genpact/reuters-kmeans-clusters -o /genpact/reuters-kmeans/ -dm org.apache.mahout.common.distance.CosineDistanceMeasure -x 10 -k 20 -ow --clustering 
+mahout clusterdump -s /genpact//reuters-kmeans/clusters-*-final -d /reuters-out-seqdir-sparse-kmeans/dictionary.file-0 -dt sequencefile -b 100 -n 20 --evaluate -dm org.apache.mahout.common.distance.CosineDistanceMeasure --pointsDir /genpact/reuters-kmeans/clusteredPoints 
+mahout trainlogistic --passes 100 --rate 50 --lambda 0.001 --input /home/hadoopz/naga/datasets/adult.csv --output adults.model --target salgroup --categories 2 --predictors age sex hours-per-week --types n n n 
+mahout runlogistic --input /home/hadoopz/naga/datasets/adult.test --model adults.model --auc --scores --confusion > clasifieddata 
+hadoop fs -rmr /genpact/lda 
+mahout lda -i /genpact/reuters-out-seqdir-sparse-kmeans/tf-vectors -o /genpact/lda -ow -k 10 -x 20 
+mahout org.apache.mahout.clustering.lda.LDAPrintTopics -i /genpact/lda/state-20/ -d /genpact/reuters-out-seqdir-sparse-kmeans/dictionary.file-0 -dt sequencefile -w 10
