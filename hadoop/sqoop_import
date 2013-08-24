@@ -1,0 +1,33 @@
+MySQL:
+------
+create database hadoop;
+use hadoop;
+create table stocks (exchange varchar(50), symbol varchar(50), stock varchar(50), volume bigint(11));
+insert into stocks (exchange, symbol, stock, volume) values ('NYSE', 'GOOG', 'Google', 12000000);
+insert into stocks (exchange, symbol, stock, volume) values ('BSE', 'SBI', 'State Bank of India', 100000);
+insert into stocks (exchange, symbol, stock, volume) values ('BSE', 'INFY', 'Infosys Technologies Ltd', 1000000);
+insert into stocks (exchange, symbol, stock, volume) values ('BSE', 'TCS', 'Tata Consultancy Services', 1500000);
+
+Sqoop Import Data from MySQL to HDFS:
+
+./bin/sqoop import --connect jdbc:mysql://localhost:3306/hadoop --username root -P --table stocks -m 1 --target-dir /sqoop/mysql
+
+Sqoop Excuting the statements to test:
+
+./bin/sqoop eval --connect jdbc:mysql://localhost:3306/hadoop --username root -P -e "select * from stocks"
+
+Sqoop Export Data from HDFS to MySQL:
+
+./bin/sqoop export --connect jdbc:mysql://localhost:3306/hadoop --username root -P --export-dir /user/naga/stocks/ --table nyse
+
+Sqoop list tables in Databases
+
+./bin/sqoop list-tables --connect jdbc:mysql://localhost:3306/hadoop --username root -P
+
+Sqoop list Databases:
+
+./bin/sqoop list-databases --connect jdbc:mysql://localhost:3306/ --username root -P
+
+Sqoop to import all the tables from Database to HDFS:
+
+./bin/sqoop import-all-tables --connect jdbc:mysql://localhost:3306/hadoop --username root -P -m 1

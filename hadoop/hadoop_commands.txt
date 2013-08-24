@@ -1,0 +1,56 @@
+Once Hadoop Pseudo distributed is installed and configured
+
+We added HADOOP_HOME in our .bashrc file
+We added all the executables of HADOOP to our System PATH
+cmd > export PATH=$PATH:$HADOOP_HOME/bin
+
+run the script start-all.sh
+cmd > start-all.sh
+do jps, we will see the list of java process are running
+cmd > cmd
+-------
+DataNode
+NameNode
+JobTracker
+TaskTracker
+SecondaryNameNode
+-------------------
+
+To check the Hadoop installation is done or not?
+cmd > hadoop version
+
+If we get correct version then Installation is done
+
+===========* HADOOP IS READY TO DO ANY OPERATION *======================
+type hadoop command and then enter
+cmd > hadoop
+
+We will all the list of commands are available with hadoop and Optional options (Generic Options) just like conf, -D, etc.
+
+The list of commands are broadly classified into two categories
+
+1. User Commands
+	archive - To create hadoop archieve files (file.har) .har is an extension
+	distcp - It is a utility to load the data in parallel
+	fs - It is generic file system client (To do all the file operations i.e POSIX interface)
+	fsck - It is file system checking utility.
+	fetchdt - To check clients authenticity by providing deletgation tokens
+	jar - To the MapReduce programs (jobs)
+	job - It is used to list/submit/kill the jobs
+	pipes - It is a utility to run map reduce by using c++ programs.
+	queue - It provides information about the queues.
+	version - To get the version
+	CLASSNAME - Java Class to run any program
+	classpath - This prints all classpath your hadoop in run time.
+	
+2. Admin Commands 
+
+	balancer - To run balancer on hadoop cluster.
+	daemonlog - This is used to the five daemons logging information i.e NameNode, DataNode etc
+	datanode - To run Datanode on any slave machine
+	dfsadmin - This is HDFS administration
+	mradmin - This is MapReduce administration
+	jobtracker - To run Jobtracker on Master machine
+	namenode - To run Namenode on Master machine
+	secondarynamenode - To run Secondary Namenode
+	tasktracker - To run Tasktracker on any slave machine

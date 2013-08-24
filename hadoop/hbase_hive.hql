@@ -1,0 +1,1 @@
+create table hbase_names (key string, name string) stored by 'org.apache.hadoop.hive.hbase.HBaseStorageHandler' with serdeproperties ("hbase.columns.mapping" = ":key,cf:name", "hbase.table.name" = "names")

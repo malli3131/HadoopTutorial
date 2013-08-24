@@ -1,0 +1,9 @@
+hadoop fs -mkdir /training
+hadoop fs -ls /
+hadoop fs -lsr /
+hadoop fs -put CHANGES.txt /training/data/changes
+hadoop fs -copyFromLocal CHANGES.txt /training/input/changes
+hadoop fs -cat /training/data/changes
+hadoop fs -tail /training/data/changes
+hadoop fs -expunge
+hadoop fs -count /
