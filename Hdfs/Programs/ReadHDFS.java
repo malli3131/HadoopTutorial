@@ -17,6 +17,7 @@ public class ReadHDFS {
 
 	/**
 	 * @param args
+	 * @author Nagamallikarjuna
 	 * @throws URISyntaxException 
 	 * @throws IOException 
 	 */

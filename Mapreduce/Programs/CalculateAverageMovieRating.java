@@ -19,6 +19,7 @@ public class CalculateAverageMovieRating {
 
 	/**
 	 * @param args
+	 * @author Nagamallikarjuna
 	 * @throws  
 	 * @throws ClassNotFoundException 
 	 * @throws InterIOExceptionruptedException 

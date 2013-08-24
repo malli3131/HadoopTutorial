@@ -7,6 +7,13 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 public class StockMinMaxReducer extends Reducer<Text, DoubleWritable, Text, Text>
+
+	/**
+	 * @param args
+	 * @author Nagamallikarjuna
+	 * @throws IOException
+	 */
+	 
 {
 	Text vword = new Text();
 	public void reduce(Text key, Iterable<DoubleWritable> values, Context context) throws IOException, InterruptedException

@@ -22,6 +22,7 @@ public class StocksMinMaxOHLC {
 
 	/**
 	 * @param args
+	 * @author Nagamallikarjuna
 	 * @throws IOException 
 	 * @throws ClassNotFoundException 
 	 * @throws InterruptedException 

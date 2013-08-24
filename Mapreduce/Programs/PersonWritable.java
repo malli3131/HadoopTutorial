@@ -7,6 +7,13 @@ import java.io.IOException;
 import org.apache.hadoop.io.Writable;
 
 public class PersonWritable implements Writable{
+
+	/**
+	 * @param args
+	 * @author Nagamallikarjuna
+	 * @throws IOException
+	 */
+
 	String name;
 	String location;
 	String company;

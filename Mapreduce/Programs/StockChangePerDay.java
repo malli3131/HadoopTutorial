@@ -20,6 +20,7 @@ public class StockChangePerDay {
 
 	/**
 	 * @param args
+	 * @author Nagamallikarjuna
 	 * @throws IOException 
 	 * @throws ClassNotFoundException 
 	 * @throws InterruptedException 

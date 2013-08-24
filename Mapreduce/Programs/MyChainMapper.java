@@ -28,6 +28,7 @@ public class MyChainMapper {
 
 	/**
 	 * @param args
+	 * @author Nagamallikarjuna
 	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException {

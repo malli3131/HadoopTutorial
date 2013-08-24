@@ -17,6 +17,12 @@ import org.apache.hadoop.util.GenericOptionsParser;
 
 public class SequenceMapReduce {
 
+	/**
+	 * @param args
+	 * @author Nagamallikarjuna
+	 * @throws IOException
+	 */
+
 	public static class MyMapper extends Mapper<Text, LongWritable, Text, LongWritable>{
 		public void map(Text key, LongWritable value, Context context) throws InterruptedException, IOException
 		{

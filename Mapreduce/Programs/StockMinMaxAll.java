@@ -19,6 +19,7 @@ public class StockMinMaxAll {
 
 	/**
 	 * @param args
+	 * @author Nagamallikarjuna
 	 * @throws IOException 
 	 * @throws ClassNotFoundException 
 	 * @throws InterruptedException 

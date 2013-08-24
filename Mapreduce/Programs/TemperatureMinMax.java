@@ -12,6 +12,13 @@ import java.io.*;
 import java.util.Set;
 
 public class TemperatureMinMax
+
+	/**
+	 * @param args
+	 * @author Nagamallikarjuna
+	 * @throws IOException
+	 */
+	 
 {
         public static class MapClass extends Mapper<LongWritable, Text, Text, MapWritable>
         {

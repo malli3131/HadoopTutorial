@@ -19,6 +19,11 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
 public class KmeansCluster {
+
+	/**
+	 * @param args
+	 * @author Nagamallikarjuna
+	 */
 	public static final String hdfsPath = "/kmeans/cluster";
 	
 	public static class MyMapper extends Mapper<LongWritable, Text, Text, Text>{

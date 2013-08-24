@@ -23,6 +23,12 @@ import org.apache.hadoop.util.GenericOptionsParser;
 
 
 public class OldAPIMRTemplate {
+
+	/**
+	 * @param args
+	 * @author Nagamallikarjuna
+	 * @throws IOException
+	 */
 	
 	public static class MyMapper extends MapReduceBase implements Mapper<LongWritable, Text, Text, IntWritable>
 	{

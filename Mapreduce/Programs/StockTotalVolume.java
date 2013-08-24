@@ -16,6 +16,12 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
 public class StockTotalVolume {
 
+	/**
+	 * @param args
+	 * @author Nagamallikarjuna
+	 * @throws IOException
+	 */
+
 	public static class MyMapper extends Mapper<LongWritable, Text, Text, LongWritable>{
 		public void map(LongWritable key, Text value, Context context) throws InterruptedException, IOException
 		{

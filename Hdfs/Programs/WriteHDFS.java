@@ -15,6 +15,7 @@ public class WriteHDFS {
 
 	/**
 	 * @param args
+	 * @author Nagamallikarjuna
 	 * @throws URISyntaxException 
 	 * @throws IOException 
 	 */

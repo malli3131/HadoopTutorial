@@ -19,6 +19,7 @@ public class InvertedIndex {
 
 	/**
 	 * @param args
+	 * @author Nagamallikarjuna
 	 */
 	public static class Mymap extends Mapper<LongWritable, Text,Text, Text>
 	{

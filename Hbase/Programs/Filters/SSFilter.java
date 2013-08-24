@@ -1,4 +1,4 @@
-package com.raj.hbase.index;
+package com.twok.hbase.filter;
 
 import java.io.IOException;
 
@@ -17,6 +17,7 @@ public class SSFilter {
 
 	/**
 	 * @param args
+	 * @author Nagamallikarjuna
 	 */
 		public static Configuration conf = HBaseConfiguration.create();
 		public static void main(String[] args) throws IOException {

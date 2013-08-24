@@ -7,6 +7,12 @@ import java.io.IOException;
 import org.apache.hadoop.io.Writable;
 
 public class StockWritable implements Writable {
+
+	/**
+	 * @param args
+	 * @author Nagamallikarjuna
+	 * @throws IOException
+	 */
 	
 	double open = 0.0;
 	double high = 0.0;

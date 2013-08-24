@@ -1,4 +1,4 @@
-package com.raj.hbase;
+package com.twok.hbase;
 
 import java.io.IOException;
 
@@ -21,6 +21,7 @@ public class HBaseStockVolume {
 
 	/**
 	 * @param args
+	 * @author Nagamallikarjuna
 	 * @throws IOException 
 	 * @throws ClassNotFoundException 
 	 * @throws InterruptedException 

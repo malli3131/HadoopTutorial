@@ -1,4 +1,4 @@
-package com.raj.hbase;
+package com.twok.hbase;
 
 import java.io.IOException;
 
@@ -16,6 +16,7 @@ public class HBaseDataRead {
 
 	/**
 	 * @param args
+	 * @author Nagamallikarjuna
 	 */
 	public static final Configuration conf = HBaseConfiguration.create();
 	public static void main(String[] args) throws IOException {

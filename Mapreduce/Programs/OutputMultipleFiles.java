@@ -23,6 +23,7 @@ public class OutputMultipleFiles {
 
 	/**
 	 * @param args
+	 * @author Nagamallikarjuna
 	 * @throws IOException
 	 * @throws InterruptedException
 	 * @throws ClassNotFoundException

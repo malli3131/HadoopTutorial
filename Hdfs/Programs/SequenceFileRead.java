@@ -12,7 +12,7 @@ import org.apache.hadoop.io.SequenceFile;
 public class SequenceFileRead {
 
         /**
-         * @author malli
+         * @author Nagamallikarjuna
          * @param args
          */
 	

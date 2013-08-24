@@ -23,6 +23,12 @@ import org.apache.hadoop.util.GenericOptionsParser;
 
 
 public class OldAPIStocksTotalVolume {
+
+	/**
+	 * @param args
+	 * @author Nagamallikarjuna
+	 * @throws IOException
+	 */
 	
 	public static class MyMapper extends MapReduceBase implements Mapper<LongWritable, Text, Text, IntWritable>
 	{

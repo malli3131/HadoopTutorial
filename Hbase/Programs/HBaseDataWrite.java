@@ -1,4 +1,4 @@
-package com.raj.hbase;
+package com.twok.hbase;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,6 +14,7 @@ public class HBaseDataWrite {
 
 	/**
 	 * @param args
+	 * @author Nagamallikarjuna
 	 */
 	public static Configuration conf = HBaseConfiguration.create();
 	public static void main(String[] args) throws IOException {

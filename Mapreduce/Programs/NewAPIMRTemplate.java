@@ -16,6 +16,12 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
 public class NewAPIMRTemplate {
+
+	/**
+	 * @param args
+	 * @author Nagamallikarjuna
+	 * @throws IOException
+	 */
 	
 	public static class MyMapper extends Mapper<LongWritable, Text, Text, IntWritable>
 	{

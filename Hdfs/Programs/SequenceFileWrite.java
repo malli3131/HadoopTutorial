@@ -17,6 +17,7 @@ public class SequenceFileWrite {
 
 	/**
 	 * @param args
+	 * @author Nagamallikarjuna
 	 */
 	public static void main(String[] args) throws IOException, URISyntaxException {
 		String name = "/home/naga/bigdata/hadoop-1.0.3/jobs/daily";
