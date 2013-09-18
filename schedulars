@@ -278,3 +278,9 @@ To configure Capacity Schedular, we need to do the following things:
 Once all the above changes are done, just start-all.sh to start the Hadoop cluster.
 Visit the Hadoop MapReduce Cluster Administration on http://hostname:50030/jobtracker.jsp
 We will see the Scheduling Information in the web page, it gives the complete info about each and every configured Queue.
+
+
+***********************************************************************************************************************
+Configuring Fair Schedular
+
+  To Be Updated.....
