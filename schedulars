@@ -1,0 +1,16 @@
+Hadoop Schedulars:
+------------------
+
+Hadoop has 4 types schedulars
+
+  1. FIFO (By default)
+  2. Capacity Schedular
+  3. Fair Schedular
+  4. HOD Schedular (Hadoop On Demand)
+  
+In Hadoop jobs are submitted to Queues. Queues are submitting jobs to Hadoop Cluster By default the queue name is called default.
+
+COnfiguring Capacity Schedular:
+-------------------------------
+
+To confi
