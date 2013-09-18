@@ -1,7 +1,7 @@
 Hadoop Schedulars:
 ------------------
 
-Hadoop has 4 types schedulars
+Hadoop has 4 types of schedulars
 
   1. FIFO (By default)
   2. Capacity Schedular
