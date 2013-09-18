@@ -128,4 +128,6 @@ Sqoop Commands Uasage:
     
     The above command will import all the tables of MySQL hadoop database into HDFS directory called /hadoop
     
-9. 
+9.   TO BE UPDATED........
+      
+        
