@@ -3,59 +3,48 @@ package twok.hadoop.mapreduce;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+/**
+ * This data type used for both key and value. It is implementing WritableComparable.
+ * 
+ **/
+import org.apache.hadoop.io.WritableComparable;
 
-import org.apache.hadoop.io.Writable;
-
-public class PersonWritable implements Writable{
-
-	/**
-	 * @param args
-	 * @author Nagamallikarjuna
-	 * @throws IOException
-	 */
-
-	String name;
-	String location;
-	String company;
+public class PersonWritable implements WritableComparable<PersonWritable>{
+	String firstName;
+	String lastName;
+	
 	public void readFields(DataInput input) throws IOException {
-		name = input.readUTF();
-		location = input.readUTF();
-		company = input.readUTF();
+		firstName = input.readUTF();
+		lastName = input.readUTF();
 	}
 
 	public void write(DataOutput output) throws IOException {
-		output.writeUTF(name);
-		output.writeUTF(location);
-		output.writeUTF(company);
+		output.writeUTF(firstName);
+		output.writeUTF(lastName);
 	}
 	
-	public void setName(String name) 
+	public void setFirstName(String fname) 
 	{ 
-		this.name = name;
+		this.firstName = fname;
 	}
 	
-	public void setLocation(String location) 
+	public void setLastName(String lname) 
 	{ 
-		this.location = location;
-	}
-	
-	public void setCompany(String company) 
-	{ 
-		this.company = company;
-	}
-	
+		this.lastName = lname;
+	}	
 
 	  /** Return the value of this IntWritable. */
-	  public String getName() 
+	  public String getFirstName() 
 	  { 
-		  return name; 
+		  return firstName; 
 	  }
-	  public String getLoc() 
+	  public String getLastName() 
 	  { 
-		  return location; 
+		  return lastName; 
 	  }
-	  public String getCompany() 
-	  { 
-		  return company; 
-	  }
+
+	@Override
+	public int compareTo(PersonWritable person) {
+		return (firstName.compareTo(person.firstName) != 0) ? firstName.compareTo(person.firstName) : lastName.compareTo(person.lastName);
+	}
 }
