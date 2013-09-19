@@ -1,0 +1,4 @@
+Hadoop jar clicksextraction.jar ClickExtraction /user/adbigdata/hive/table/impression/ /user/adbigdata/mapred/click/output
+Hadoop jar conversionextraction.jar ConversionExtraction /user/adbigdata/hive/table/impression/ /user/adbigdata/mapred/conversion/output
+Hadoop jar clickconversion.jar ClickConversion /user/adbigdata/mapred/click/output/ /user/adbigdata/mapred/clickconversion/output
+Hadoop jar impconversion.jar ImpressionConversion /user/adbigdata/hive/table/impression/ /user/adbigdata/mapred/clickimpression/output
