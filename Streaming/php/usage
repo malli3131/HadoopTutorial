@@ -1,0 +1,3 @@
+
+cmd> hadoop jar ../hadoop-1.0.3/contrib/streaming/hadoop-streaming-1.0.3.jar --input /streaming/news --output /streaming/phpstream 
+--mapper 'php /home/naga//bigdata/streaming/mapper.php' --reducer 'php /home/naga//bigdata/streaming/reducer.php'
