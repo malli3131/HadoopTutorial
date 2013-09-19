@@ -1,0 +1,4 @@
+Test it as Linux pipe to check whether it is working properly or not
+cmd> cat news | perl mapper.pl | sort | perl reducer.pl
+cmd> hadoop jar ../hadoop-1.0.3/contrib/streaming/hadoop-streaming-1.0.3.jar --input /streaming/news --output /streaming/plstream 
+--mapper 'perl /home/naga//bigdata/streaming/mapper.pl' --reducer 'perl /home/naga//bigdata/streaming/reducer.pl'
