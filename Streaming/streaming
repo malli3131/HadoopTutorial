@@ -2,3 +2,6 @@ Hadoop Streaming is an utility to do mapreduce programming is non java programs.
 which integrates the Hadoop + I/O + External executables (Python, Perl, PHP, Shell etc...).
 
 Note: Install non java program environment on All machines in the Hadoop cluster.
+
+I am providing the mapper and reducer functionality for wordcount program in many languages... Please refer the corresponding
+language directories...
