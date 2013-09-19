@@ -1,0 +1,2 @@
+hadoop jar $HADOOP_HOME/contrib/streaming/hadoop-streaming-1.0.3.jar --input /streaming/news --output /streaming/pystream 
+--mapper 'python /home/naga//bigdata/streaming/mapper.py' --reducer 'python /home/naga//bigdata/streaming/reducer.py'
