@@ -1,0 +1,180 @@
+all
+and
+any
+arrange
+as
+asc
+bag
+by
+bytearray
+cat
+cd
+chararray
+cogroup
+copyFromLocal
+copyToLocal
+cp
+cross
+define
+desc
+describe
+distinct
+double
+dump
+eval
+explain
+filter
+flatten
+float
+foreach
+generate
+group
+help
+if
+inner
+int
+into
+is
+join
+kill
+load
+long
+ls
+map
+matches
+mkdir
+mv
+not
+null
+or
+order
+outer
+parallel
+pwd
+quit
+register
+rm
+set
+split
+store
+tuple
+union
+using
+========
+ALL
+AND
+ANY
+ARITY
+ARRANGE
+AS
+ASC
+AVG
+BAG
+BY
+BYTEARRAY
+BagSize
+BinStorage
+CAT
+CD
+CHARARRAY
+COGROUP
+CONCAT
+COPYFROMLOCAL
+COPYTOLOCAL
+COUNT
+CP
+CROSS
+ConstantSize
+DEFINE
+DESC
+DESCRIBE
+DIFF
+DISTINCT
+DOUBLE
+DUMP
+EVAL
+EXPLAIN
+FILTER 
+FLATTEN
+FLOAT 
+FOREACH
+GENERATE
+GROUP
+HELP
+IF
+INNER
+INT
+INTO
+IS 
+IsEmpty
+JOIN
+KILL
+LOAD
+LONG
+LS
+MAP
+MATCHES
+MAX
+MIN
+MKDIR
+M
+MapSize
+NOT
+NULL
+OR
+ORDER
+OUTER
+PARALLEL
+PWD
+PigDump
+PigStorage
+QUIT
+REGISTER
+RM
+SET
+SIZE
+SPLIT
+STORE
+SUM
+TOKENIZE
+TUPLE
+TextLoader
+TupleSize
+UNION
+USING
+Utf8StorageConverter
+
+=======================
+Built-In Math Functions
+-----------------------
+ABS	Absolute Value
+ACOS	Arc CosiBne
+ASIN	Arc Sine
+ATAN	Arc Tanget
+CBRT	Cube Root
+CEIL	Next-highest double value that is a mathematical integer
+COS	Cosine
+COSH	Hyperbilic Cosine
+EXP	Euler’s number (e) raised to the power of input
+FLOOR	Next-lowest double value that is a mathematical integer
+LOG	Natural logarithm of input
+LOG10	Logarithm base 10 of input
+ROUND	Long nearest to the value of input
+SIN	Sine
+SINH	Hyperbilic Sine
+SQRT	Square Root
+TAN	Tangent
+TANH	Hyperbolic Tangent
+==========================
+Built-In Aggregate Functions
+----------------------------
+AVG	Average
+COUNT	Counter excluding null values
+COUNT_STAR	Counter including null values
+MAX	Maximum
+MIN	Minimum
+SUM	Sums all
+==================
+Built-in chararray and bytearray Functions
+------------------------------------------
+
