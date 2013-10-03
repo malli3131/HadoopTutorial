@@ -1,0 +1,50 @@
+Download the Apache Flume from Apache Flume Website
+Extract it and place in your directory
+modify the .bashrc file under /home/$USER/
+cmd> vim /home/$USER/.bashrc
+add the FLUME-HOME=Path of the flume directory
+Add the Flume executables to System PATH by modifying the System PATH variable..
+cmd> export PATH=$PATH:$FLUME_HOME/bin
+cmd> source /home/$USER/.bashrc
+-----------------------------------------------------------------------------------------------------
+Creating the Flume Agent:
+
+Create an example.conf file under configuration directory of Flume_Home
+example.conf
+=============
+agent.sources=source
+agent.sinks=sink
+agent.channels=memorychannel
+
+agent.sources.source.type=exec
+agent.sources.source.command=cat give some log file in your system like /home/hadoopz/naga/bigdata/hadoop-1.1.1/mylog
+agent.sources.source.interceptors = a
+agent.sources.source.interceptors.a.type = org.apache.flume.interceptor.TimestampInterceptor$Builder
+
+agent.sinks.sink.type=hdfs
+agent.sinks.sink.hdfs.path=hdfs://SDL-Ubuntu-1:9000/flume
+agent.sinks.sink.hdfs.file.Type=DataStream
+agent.sinks.sink.hdfs.batchSize = 20000000
+agent.sinks.sink.hdfs.rollCount = 500000000
+agent.sinks.sink.hdfs.rollSize = 1000000000
+agent.sinks.sink.hdfs.rollInterval = 10000
+agent.sinks.sink.hdfs.writeFormat = Text
+
+agent.channels.memorychannel.type=memory
+agent.channels.memorychannel.capacity=10000
+agent.channels.memorychannel.transactionCapacity=1000
+
+agent.sources.source.channels=memorychannel
+agent.sinks.sink.channel=memorychannel
+
+-----------------------------------------
+Running Flume:
+create the flume directory in hadoop distributed file system
+cmd> hadoop fs -mkdir /flume
+
+flume-ng agent -n agent -c $FLUME_HOME/conf/ -f $FLUME_HOME/conf/example.conf
+
+Test the whether the data is written in HDFS or NOT?
+
+The above flume agent configuration is very basic, you can add more and more sources, sinks, channels related configuration
+parameters.....
