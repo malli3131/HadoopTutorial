@@ -17,7 +17,7 @@ agent.sinks=sink
 agent.channels=memorychannel
 
 agent.sources.source.type=exec
-agent.sources.source.command=cat give some log file in your system like /home/hadoopz/naga/bigdata/hadoop-1.1.1/mylog
+agent.sources.source.command=tail give some log file in your system like tail -F /home/hadoopz/naga/bigdata/hadoop-1.1.1/mylog
 agent.sources.source.interceptors = a
 agent.sources.source.interceptors.a.type = org.apache.flume.interceptor.TimestampInterceptor$Builder
 
