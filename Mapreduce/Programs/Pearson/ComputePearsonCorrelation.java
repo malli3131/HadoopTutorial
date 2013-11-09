@@ -37,9 +37,9 @@ public class ComputePearsonCorrelation {
 	 * 
 	 * 	|c1	c2	c3
 	 * 	--------------------
-	 *    c1|1.0	1.0	-1.0
-	 *    c2|1.0	1.0	-1.0
-	 *    c3|-1.0	-1.0	1.0
+	 *     c1|1.0	1.0	-1.0
+	 *     c2|1.0	1.0	-1.0
+	 *     c3|-1.0	-1.0	1.0
 	 * 
 	 */
 	public static void main(String[] args) throws IOException,
