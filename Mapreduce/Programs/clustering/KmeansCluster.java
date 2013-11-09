@@ -23,6 +23,13 @@ public class KmeansCluster {
 	/**
 	 * @param args
 	 * @author Nagamallikarjuna
+	 * @Usage: hadoop jar jarfile mainclass inputlocation outputlocation
+	 * 
+	 * Example:- This is used to cluster the n data points into k clusters by Kmeans cluseting Algorithm... It is basic implimentation
+	 * 
+	 * Take 10 points in 2-Dimensional space like [(1,2), (2,3), (3,4), (4,5), (10,10), (11,10), (3,3), (9,8), (12,10), (10,9)]
+	 * Take two initial centriods like (3,4), (10,10) put these in this "/kmeans/cluster" file one per line...
+	 * Put all the 10 points in the inputfile one per line.....
 	 */
 	public static final String hdfsPath = "/kmeans/cluster";
 	
