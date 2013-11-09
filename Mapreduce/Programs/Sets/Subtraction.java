@@ -35,9 +35,8 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
  *
  * @author Nagamallikarjuna
  * 
- */
-
-
+ **/
+ 
 public class Subtraction {
 	
 	public static class MyMapper extends Mapper<LongWritable, Text, Text, Text>
@@ -59,7 +58,6 @@ public class Subtraction {
 	
 	public static class MyReducer extends Reducer<Text, Text, Text, NullWritable>
 	{
-		Set<String> sets = null;
 		public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException
 		{
 			sets = new HashSet<String>();
