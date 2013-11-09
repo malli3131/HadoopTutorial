@@ -18,9 +18,29 @@ public class ComputePearsonCorrelation {
 
 	/**
 	 * @param args
+	 * @author Nagamallikarjuna
 	 * @throws IOException
 	 * @throws InterruptedException
 	 * @throws ClassNotFoundException
+	 * @Usage: hadoop jar jarname mainclassname inputlocation outputlocation
+	 * @Example:- This is used to compute the Pearson Correlation coefficient between two variables....
+	 * 
+	 * Input matrix:
+	 * 
+	 * 	|c1	c2	c3
+	 * 	------------------
+	 * 	|2	2	-2
+	 * 	|4	4	-4
+	 * 	|6	6	-6
+	 * 
+	 * Correlation Matrix is:
+	 * 
+	 * 	|c1	c2	c3
+	 * 	--------------------
+	 *    c1|1.0	1.0	-1.0
+	 *    c2|1.0	1.0	-1.0
+	 *    c3|-1.0	-1.0	1.0
+	 * 
 	 */
 	public static void main(String[] args) throws IOException,
 			ClassNotFoundException, InterruptedException {
