@@ -16,6 +16,27 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
+/**This program is used to union the two sets A, B
+* @Usage: hadoop jar jarfile mainclass inputlocation outputlocation
+* Example:-
+*
+* Input Data:
+* A,1
+* A,2
+* A,3
+* A,4
+* B,3
+* B,4
+*
+* (A U B): Output
+* 1
+* 2
+* 3
+* 4
+*
+* @author Nagamallikarjuna Ineni
+**/
+
 public class SetUnion {
 	
 	public static class MyMapper extends Mapper<LongWritable, Text, Text, Text>
