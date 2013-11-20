@@ -1,0 +1,81 @@
+Input Data:
+-----------
+DocName	Tokens
+------- ------
+cricket	sachin,sehwag,dravid,dhoni
+movie	amir,salman,hruthik,ranveer
+cricket	sachin,ganguly,rohit,dhoni
+cricket	sehwag,sachin,dravid,kohli
+movie	salman,amir,sharukh
+
+===================================================
+Pig UDF
+--------
+package com.pig.udf;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.pig.EvalFunc;
+import org.apache.pig.data.DataBag;
+import org.apache.pig.data.Tuple;
+
+public class WordBag extends EvalFunc<String> {
+
+	@Override
+	public String exec(Tuple input) throws IOException {
+		if (input == null || input.size() == 0) {
+			return null;
+		}
+		DataBag myBag = (DataBag) input.get(0);
+		String frequency = "";
+		Iterator<Tuple> itr = myBag.iterator();
+		Tuple tuple = null;
+		Map<String, Integer> wordcount = new HashMap<String, Integer>();
+		while (itr.hasNext()) {
+			tuple = itr.next();
+			DataBag tokens = (DataBag) tuple.get(0);
+			Iterator<Tuple> it = tokens.iterator();
+			while(it.hasNext())
+			{
+				tuple = it.next();
+				String token = (String) tuple.get(0);
+				if (wordcount.containsKey(token)) {
+					int count = wordcount.get(token);
+					count++;
+					wordcount.put(token, count);
+				} else {
+					wordcount.put(token, 1);
+				}
+			}
+		}
+		Set<String> keys = wordcount.keySet();
+		for (String key : keys) {
+			frequency = frequency + " " + key + ":" + wordcount.get(key);
+		}
+		return frequency;
+	}
+}
+
+Build a jar for the above UDF and add it to pig script;
+
+========================================================================================
+PigScript:
+----------
+register /home/hadoopz/naga/bigdata/pig-0.10.0/pigscripts/wordbag.jar
+news = load '/pig/news' using PigStorage() as (doc:chararray, content:chararray);
+words = foreach news generate doc, TOKENIZE(content, ',') as mywords;
+describe words;
+wordcount = foreach grpwords generate group, com.pig.udf.WordBag(words.mywords);
+dump wordcount;
+
+==========================================================================================
+Output
+------
+docName	Tokens and their Frequency
+------- --------------------------
+(movie, sharukh:1 salman:2 ranveer:1 hruthik:1 amir:2)
+(cricket, sehwag:2 kohli:1 rohit:1 ganguly:1 sachin:3 dhoni:2 dravid:2)
