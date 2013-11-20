@@ -1,0 +1,60 @@
+Input Data
+----------------
+p1 201.23
+p1 200.50
+p2 123.45
+p3 99.99
+p3 98.88
+p2 125.67
+p3 122.56
+p4 50.50
+p3 120.55
+p4 55.55
+p4 54.44
+
+
+PigScript
+---------
+register /home/hadoopz/naga/bigdata/pig-0.10.0/pigscripts/minbag.jar                    
+products = load '/pig/products' using PigStorage() as (product:chararray, price:double);
+grpproducts = group products by product;                                                
+promin = foreach grpproducts generate group, com.pig.udf.MinBag(products.price) as min; 
+dump promin;
+
+UDF
+---
+package com.pig.udf;
+
+import java.io.IOException;
+import java.util.Iterator;
+
+import org.apache.pig.EvalFunc;
+import org.apache.pig.data.DataBag;
+import org.apache.pig.data.Tuple;
+
+public class MinBag extends EvalFunc<Double> {
+
+	@Override
+	public Double exec(Tuple input) throws IOException {
+		if (input == null || input.size() == 0) {
+			return null;
+		}
+		DataBag myBag = (DataBag) input.get(0);
+		Iterator<Tuple> itr = myBag.iterator();
+		Tuple tuple = null;
+		Double min = Double.MAX_VALUE;
+		while (itr.hasNext()) {
+			tuple = itr.next();
+			Double price = (Double) tuple.get(0);
+			min = (min > price) ? price : min;
+		}
+		return min;
+	}
+}
+
+Output
+------
+(p1,200.5)
+(p2,123.45)
+(p3,98.88)
+(p4,50.5)
