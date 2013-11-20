@@ -1,3 +1,17 @@
+Input Data
+--------------
+p1	201.23
+p1	200.50
+p2	123.45
+p3	99.99
+p3	98.88
+p2	125.67
+p3	122.56
+p4	50.50
+p3	120.55
+p4	55.55
+p4	54.44
+
 PigScript:
 ----------
 register /home/hadoopz/naga/bigdata/pig-0.10.0/pigscripts/sumbag.jar
@@ -36,3 +50,10 @@ public class SumBag extends EvalFunc<Double> {
 		return Math.round(sum * 100.0) / 100.0;
 	}
 }
+
+Output
+-------
+(p1,401.73)
+(p2,249.12)
+(p3,441.98)
+(p4,160.49)
