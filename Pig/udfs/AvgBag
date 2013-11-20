@@ -1,0 +1,50 @@
+PigScript:
+----------
+register /home/hadoopz/naga/bigdata/pig-0.10.0/pigscripts/avgbag.jar
+products = load '/pig/products' using PigStorage() as (product:chararray, price:double);
+grpproducts = group products by product;
+proavg = foreach grpproducts generate group, com.pig.udf.AvgBag(products.price) as sum;
+dump proavg;
+
+UDF
+---
+package com.pig.udf;
+
+import java.io.IOException;
+import java.util.Iterator;
+
+import org.apache.pig.EvalFunc;
+import org.apache.pig.data.DataBag;
+import org.apache.pig.data.Tuple;
+
+public class AvgBag extends EvalFunc<Double> {
+
+	@Override
+	public Double exec(Tuple input) throws IOException {
+		if (input == null || input.size() == 0) {
+			return null;
+		}
+		DataBag myBag = (DataBag) input.get(0);
+		Iterator<Tuple> itr = myBag.iterator();
+		Tuple tuple = null;
+		Double sum = 0.0d;
+		Double avg = 0.0d;
+		int counter = 0;
+		while (itr.hasNext()) {
+			tuple = itr.next();
+			Double price = (Double) tuple.get(0);
+			sum = sum + price;
+			counter++;
+		}
+		avg = sum / counter;
+		return Math.round(avg * 100.0) / 100.0;
+	}
+}
+
+
+Output
+------
+(p1,200.87)
+(p2,124.56)
+(p3,110.5)
+(p4,53.5)
