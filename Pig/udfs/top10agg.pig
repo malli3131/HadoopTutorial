@@ -6,7 +6,14 @@ reqitems = foreach stocks generate stock, volume;
 --group reqitems by stock
 grpstocks = group reqitems by volume;
 --Sort the stocks data and limit top10 for every stock...
-top10 = foreach grpstocks { sortorder = order reqitems by volume desc; top = limit sortorder 10; generate group, flatten(top);}
+--It is using nested foreach.....
+top10 = foreach grpstocks { 
+  sortorder = order reqitems by volume desc; 
+  top = limit sortorder 10; 
+  generate group, flatten(top);
+}
+--again group the top10 by stock
 mygroup = group top10 by top::stock;
+--aggregate the every 10 volumes of each and every stock
 mysum = foreach mygroup generate group, SUM(top10.top::volume);
 dump mysum;
