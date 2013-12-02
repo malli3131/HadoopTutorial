@@ -1,0 +1,14 @@
+NBER Patents Data:
+
+These data comprise detail information on almost 3 million U.S. patents granted between January 1963 and December 1999, 
+all citations made to these patents between 1975 and 1999 (over 16 million), and a reasonably broad match of patents 
+to Compustat (the data set of all firms traded in the U.S. stock market)
+
+URL: http://data.nber.org/patents/
+  
+Data Files:
+
+  1. acite75_99.zip
+  2. apat63_99.zip
+  3. ainventor.zip 
+  
