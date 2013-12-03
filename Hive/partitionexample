@@ -1,0 +1,38 @@
+Creating the base table without partitions....
+
+create table pop(sno int, name string, age int, dist string, state string) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t';
+
+load data inpath '/india/population' into table pop;
+
+1	naga	27	Prakasam	AP
+2	siva	32	Nellore	AP
+3	Pramod	32	Gorakhpur	UP
+4	ravi	30	Prakasam	AP
+5	giri	35	Nellore	AP
+6	devika	23	Guntur	AP
+7	Naresh	27	Guntur	AP
+8	Nelam	25	Gorakhpur	UP
+9	indira	23	Prakasam	AP
+10	Manju	35	Hasan	KA
+
+================================================================
+Create the partition table with two partition columns state, district...
+
+create table demographics(sno int, name string, age int) partitioned by (dist string, state string) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t';
+
+insert into table demographics partition (dist='Nellore', state='AP') select sno, name, age from pop where dist='Prakasam' and state='AP';
+
+insert into table demographics partition (dist='Prakasam', state='AP') select sno, name, age from pop where dist='Prakasam' and state='AP';
+                                                                         select * from demographics;
+
+2	siva	32	Nellore	AP
+5	giri	35	Nellore	AP
+1	naga	27	Prakasam	AP
+4	ravi	30	Prakasam	AP
+9	indira	24	Prakasam	AP
+
+select * from demographics where dist='Prakasam' and state = 'AP';
+
+1	naga	27	Prakasam	AP
+4	ravi	30	Prakasam	AP
+9	indira	24	Prakasam	AP
