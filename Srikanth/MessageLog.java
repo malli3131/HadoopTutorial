@@ -18,6 +18,7 @@ import org.apache.hadoop.util.GenericOptionsParser;
 public class MessageLog {
 
 	/**
+	 * This is used to join the consumer and producer fields based on messageid.......
 	 * @param args
 	 * @throws IOException 
 	 * @throws InterruptedException 
