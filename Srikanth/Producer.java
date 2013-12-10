@@ -19,6 +19,7 @@ import org.apache.hadoop.util.GenericOptionsParser;
 public class Producer {
 
 	/**
+	 * This is used to extract the required fields from Producer Logs..... like messageid, timestamp, message topic...
 	 * @param args
 	 * @throws IOException 
 	 * @throws InterruptedException 
