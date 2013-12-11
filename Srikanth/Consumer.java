@@ -19,7 +19,7 @@ import org.apache.hadoop.util.GenericOptionsParser;
 public class Consumer {
 
 	/**
-	 * Usage: hadoop jar jarfilename.jar co.srikanth.Consumer /logs/consumer /logs/consumeroutput
+	 * Usage: hadoop jar jarfilename.jar com.srikanth.Consumer /logs/consumer /logs/consumeroutput
 	 * This is used to extract the required fields from Consumer Logs..... like messageid, timestamp, message topic...
 	 * @param args
 	 * @throws IOException 
