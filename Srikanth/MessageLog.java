@@ -18,6 +18,11 @@ import org.apache.hadoop.util.GenericOptionsParser;
 public class MessageLog {
 
 	/**
+	 * Create the directory processedLogs
+	 * hdfs fs -mkdir /processedLogs
+	 * hdfs fs -mv /logs/consumeroutput/part* /processedLogs/consumer
+	 * hdfs fs -mv /logs/produceroutput/part* /processedLogs/producer
+	 * Usage: hadoop jar jarfilename.jar com.srikanth.MessageLog /processedLogs/ /logs/output
 	 * This is used to join the consumer and producer fields based on messageid.......
 	 * @param args
 	 * @throws IOException 
