@@ -1,14 +1,43 @@
 This documentation gives complete information about user and admin commands of HDFS.
-Hadoop fs is the command to execute file system operations like directory creation, renaming files, copying files etc. 
-Cmd> hadoop fs –fs [local | <file system URI>]
-Specify the file system to use. If not specified, the current configuration is used, taken from the following, in increasing precedence: core-default.xml inside the hadoop jar file, core-site.xml in configuration directory in hadoop home conf/
-'Local' means use the local file system as your DFS. 
-<File system URI> specifies a particular file system to contact.
-Example:- 
-•	hadoop fs -fs local ---> it will use the file system as local file system.
-•	hadoop fs -fs localhost: 9000 ---> It will use the file system as Hadoop distributed file system.
-There is no need to specify, by default it chooses based on configuration files [ core-site, hdfs-site, mapred-site xml files]
 
+HDFS User Commands are:
+1. fs
+2. archive
+3. distcp
+
+HDFS Admin Commands are:
+1. namenode -format
+2. namenode
+3. secondarynamenode
+4. datanode
+5. dfsadmin
+6. fsck
+7. 
+
+USER Commands:
+--------------
+1. fs -- FileSystem Client.
+
+	Hadoop fs is the command to execute file system operations like directory creation, renaming files,
+	copying files, removing, displaying files.. etc. 
+
+Usage: hadoop fs –fs [local | <file system URI>] [Generic Options] [Command Options]
+
+	Specify the file system to use. If not specified, the current configuration is used, taken from the following,
+	in increasing precedence: core-default.xml inside the hadoop jar file, core-site.xml in configuration directory 
+	in hadoop home conf/ 'Local' means use the local file system as your DFS. <File system URI> specifies a 
+	particular file system to contact.
+	
+Example 
+	hadoop fs -fs local ---> it will use the file system as local file system.
+	hadoop fs -fs hostname:9000 ---> It will use the file system as Hadoop distributed file system.
+	
+	There is no need to specify, by default it chooses based on configuration files 
+	[ core-site, hdfs-site, mapred-site xml files]
+
+The following are the available command options with fs:
+--------------------------------------------------------
+1. ls: 
 Cmd> hadoop fs -ls <path>: 	
 List the contents that match the specified file pattern. If path is not specified, the contents of /user/<currentUser> will be listed. Directory entries are of the form dirName full path/<dir> and file entries are of the form fileName(full path) <r n> size where n is the number of replicas specified for the file and size is the size of the file, in bytes.
 Example:- 
