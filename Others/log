@@ -1,0 +1,30 @@
+consume.log:
+2013-12-11 09:04:30.345,InsideCordinator.Prs(), wrote message 1458748769876+12-SG::Transcations.SGIL.GDR:SUBL_EMS:SG.FW::GDR.Intgr1.CSW.1.TK::FWRDD|CSW:M.<FWRDD>.M.<CSW>:0 to DR_TK_UAT10#EMS#SG__Transcations.SGJL.GDR#SUBL_EMS#2013_04_23_23_49_52_387_EDT with seq no 3,399
+publish.log:
+2013-12-11 09:04:45.567,OutboundHandle.process(),Record #3,463 [msgID: 1458748769876+12][src:SG::Transcations.SGIL.GDR] from store GDR_TK_UAT#10EMS#SG__transcations.SGIL.GDR#SUBL_EMS#2013_04_23_23_49_52_387_EDT sent to SG.FW::GDR.Intgr1.CSW.1.TK
+
+Result:
+
+MSG ID: Consumed on Topic: Consumed time Stamp: Expected Tag : Expected Publisher topic : Published(Y/N): Published time-stamp(If Yes)
+
+Explanation:
+
+(3)2013-12-11 09:04:30.345,InsideCordinator.Prs(), Wrote message (1)1458748769876+12-(2)SG::Transcations.SGIL.GDR:SUBL_EMS:(5)SG.FW::GDR.Intgr1.CSW.1.TK::FWRDD|CSW:M.<FWRDD>.M.<(4)CSW>:0 to DR_TK_UAT10#EMS#SG__Transcations.SGJL.GDR#SUBL_EMS#2013_04_23_23_49_52_387_EDT with seq no 3,399
+publish.log:
+(7)2013-12-11 09:04:45.567,OutboundHandle.process(),Record #3,463 [msgID: 1458748769876+12][src:SG::Transcations.SGIL.GDR] from store GDR_TK_UAT#10EMS#SG__transcations.SGIL.GDR#SUBL_EMS#2013_04_23_23_49_52_387_EDT sent to SG.FW::GDR.Intgr1.CSW.1.TK
+
+Result:
+
+(1)MSG ID: (2)Consumed on Topic : (3)Consumed time Stamp :(4)Expected Tag : (5)Expected Publisher topic : (6) Published(Y/N) : (7)Published time-stamp(If Yes)
+
+Published(Y/N) – This is a calculated field and is – Y when combination of MsgId, Publisher Topic, matches.
+Identification - wrote message for Consumer
+Identification – send to for Publisher
+
+Reg Ex:
+
+Topic_p =” (\\w)+::((\\w )+[.]) +(\\w)+”
+Date_p = “^\\d{4)-d{2}-d{2}\\s\\d{2}:d{2}:d{2}.d{3}
+
+Publisher_pattern = ‘wrote message’
+Consumer_pattern = 'send to'
