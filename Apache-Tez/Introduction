@@ -1,0 +1,6 @@
+Apache Tez generalizes the MapReduce paradigm to a more powerful framework for executing a complex DAG 
+(directed acyclic graph) of tasks. MapReduce has been the data processing backbone for Hadoop, but its batch-oriented 
+nature makes it unsuited for interactive query. Tez will allow projects in the Apache Hadoop ecosystem such as Apache Hive 
+and Apache Pig to meet demands for fast response times and extreme throughput at petabyte scale.
+
+Apache Tez runs on Hadoop YARN. It doen't work on Hadoop 1.X.X distribution.
