@@ -1,0 +1,30 @@
+The following steps are required to install Apache Tez:
+
+Step1: Install Apache Hadoop 2.X.X
+Step2: Download the Apache Tez
+Step3: Build the Apache Tez using Maven
+       
+       cmd> cd tez Directory
+       cmd> mvn clean package -Dtar -DskipTests=true -Dmaven.javadoc.skip=true
+       cmd> Copy the Tar file from target directory and extract it.
+       
+Step4: Keep all the jars of Tez and its dependency jars into HDFS under as path /apps/
+
+       cmd> hadoop fs -mkdir /apps/
+       cmd> hadoop fs -put *.jars /apps/ [copy all the tez jars and its dependent jars into HDFS under /apps/ directory]
+       
+Step5: Configure tez-site.xml to set tez.lib.uris to point to the paths in HDFS containing the jars.
+
+   
+Step6: Modify mapred-site.xml to change "mapreduce.framework.name" property from its default value of "yarn" to "yarn-tez"
+Step7: Set HADOOP_CLASSPATH to have the following paths in it:
+          location of tez-site.xml
+          location of the tez jars and dependencies.
+
+Step8: Submit a MR job as you normally would using something like:
+       cmd> cd $HADOOP_HOME
+       cmd> hadoop jar hadoop-mapreduce-client-jobclient-2.2.0-tests.jar sleep -mt 1 -rt 1 -m 1 -r 1
+
+This will use the TEZ DAG ApplicationMaster to run the MR job. This can be
+verified by looking at the AM's logs from the YARN ResourceManager UI.
+       
