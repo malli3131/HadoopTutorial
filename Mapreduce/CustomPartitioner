@@ -1,0 +1,155 @@
+Input Data:
+===========
+
+naga    impetus 28      bangalore
+vamsi   cgi     27      bangalore
+vijay   impetus 35      bangalore
+padma   impetus 19      bangalore
+rajesh  tcs     52      hyderabad
+narayana        infosys 55      bangalore
+anvitha tcs     18      bangalore
+
+
+To distribute the data based the age column by Parttioner, we can use the custom Partitioner called AgePartitioner.
+The following code has the customer Parttioner code and it is used in the program also.
+
+====================================================================================================================
+AgeProjection.java
+
+package com.example.hadoop;
+
+import java.io.IOException;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Partitioner;
+import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+import org.apache.hadoop.util.GenericOptionsParser;
+
+public class AgeProjection {
+
+	/**
+	 * @param args
+	 * @throws IOException
+	 */
+
+	public static class MyMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+		Text emitKey = new Text();
+		IntWritable emitValue = new IntWritable();
+		public void map(LongWritable key, Text value, Context context)
+				throws InterruptedException, IOException {
+			String line = value.toString();
+			String[] parts = line.split("\\t");
+			if (parts.length == 4) {
+				emitKey.set(parts[0]);
+				emitValue.set(Integer.valueOf(parts[2]));
+				context.write(emitKey, emitValue);
+			}
+		}
+	}
+	public static class MyReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
+		public void reduce(Text key, Iterable<IntWritable> values, Context context)
+				throws IOException, InterruptedException {
+			for(IntWritable value : values)
+			{
+					context.write(key, value);
+			}
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	public static void main(String args[]) throws IOException,
+			InterruptedException, ClassNotFoundException {
+		Configuration conf = new Configuration();
+		String userArgs[] = new GenericOptionsParser(conf, args)
+				.getRemainingArgs();
+
+		if (userArgs.length < 2) {
+			System.out
+					.println("Usage: hadoop jar jarfilename mainclass input output");
+			System.exit(1);
+		}
+		
+		Job job = new Job(conf, "Finding the Top10 Gainers");
+		job.setJarByClass(AgeProjection.class);
+
+		job.setMapperClass(MyMapper.class);
+		job.setReducerClass(MyReducer.class);
+		job.setPartitionerClass(AgePartitioner.class);
+		
+		job.setMapOutputKeyClass(Text.class);
+		job.setMapOutputValueClass(IntWritable.class);
+		job.setOutputKeyClass(Text.class);
+		job.setOutputValueClass(IntWritable.class);
+
+		job.setInputFormatClass(TextInputFormat.class);
+		job.setOutputFormatClass(TextOutputFormat.class);
+
+		FileInputFormat.addInputPath(job, new Path(userArgs[0]));
+		FileOutputFormat.setOutputPath(job, new Path(userArgs[1]));
+
+		System.exit(job.waitForCompletion(true) ? 0 : 1);
+	}
+	
+	public static class AgePartitioner extends Partitioner<Text, IntWritable>{
+
+		@Override
+		public int getPartition(Text key, IntWritable value, int numReduceTasks) {
+			int age = value.get();
+			if( numReduceTasks == 0)
+			{
+				return 0;
+			}
+			if(age <= 20)
+			{
+				return 0;
+			}
+			else if( age > 20 && age <= 50)
+			{
+				return 1 % numReduceTasks;
+			}
+			else
+			{
+				return 2 % numReduceTasks;
+			}
+		}
+}
+}
+
+=======================================================================================================================
+Output using 3 Reducers is:
+===========================
+cmd> hadoop fs -lsr /test/age/
+-rw-r--r--   3 padma supergroup          0 2014-05-23 13:02 /test/age/_SUCCESS
+-rw-r--r--   3 padma supergroup         20 2014-05-23 13:02 /test/age/part-r-00000
+-rw-r--r--   3 padma supergroup         26 2014-05-23 13:02 /test/age/part-r-00001
+-rw-r--r--   3 padma supergroup         22 2014-05-23 13:02 /test/age/part-r-00002
+
+cmd> hadoop fs -cat /test/age/part-r-00000
+
+anvitha 18
+padma   19
+
+cmd> hadoop fs -cat /test/age/part-r-00001
+
+naga    28
+vamsi   27
+vijay   35
+
+
+cmd> hadoop fs -cat /test/age/part-r-00002
+
+narayana        55
+rajesh  52
+
+Conclusion: In the above MapReduce Program, the map emitted data distributed across the reducers based on age column
+with custom logic, we alter the logic inside the partitioner based on out requirement.
