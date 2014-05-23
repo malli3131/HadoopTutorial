@@ -9,7 +9,6 @@ rajesh  tcs     52      hyderabad
 narayana        infosys 55      bangalore
 anvitha tcs     18      bangalore
 
-
 To distribute the data based the age column by Parttioner, we can use the custom Partitioner called AgePartitioner.
 The following code has the customer Parttioner code and it is used in the program also.
 
@@ -144,7 +143,6 @@ cmd> hadoop fs -cat /test/age/part-r-00001
 naga    28
 vamsi   27
 vijay   35
-
 
 cmd> hadoop fs -cat /test/age/part-r-00002
 
