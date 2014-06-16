@@ -1,4 +1,4 @@
 Test it as Linux pipe to check whether it is working properly or not
-cmd> cat news | perl mapper.py | sort | perl reducer.py
+cmd> cat news | python mapper.py | sort | python reducer.py
 cmd> hadoop jar $HADOOP_HOME/contrib/streaming/hadoop-streaming-1.0.3.jar --input /streaming/news --output /streaming/pystream 
 --mapper 'python /home/naga//bigdata/streaming/mapper.py' --reducer 'python /home/naga//bigdata/streaming/reducer.py'
