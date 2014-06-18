@@ -30,6 +30,17 @@
     Running Lipstick on Hadoop Cluster....
     --------------------------------------
     Step4:  Install the MySQL database
+            Create the database called lipstick with xxxxxx root and password xxxxxxxx
+            Create the lipstick properties file called lipstick.properties under the /etc/ directory
+            
+            content of lipstick.properties is:
+            ----------------------------------
+            dataSource.driverClassName=com.mysql.jdbc.Driver
+            dataSource.username=xxxxx
+            dataSource.password=xxxxx
+            dataSource.dbCreate=update
+            dataSource.url=jdbc:mysql://localhost:3306/lipstick?useUnicode=true&characterEncoding=utf8&autoReconnect=true
+        
     Step5:  cmd> cd lipstick
             cmd> ./gradlew
             This will create the lipstic-x.x.war file in build directory of the lipstick home
