@@ -1,7 +1,25 @@
-What is Lipstick:
+1.  Introduction Lipstick:
 
-Lipstick combines a graphical depiction of a Pig workflow with information about the job as it executes,
-giving developers insight that previously required a lot of sifting through logs (or a Pig expert) to piece together
+    Lipstick combines a graphical depiction of a Pig workflow with information about the job as it executes,
+    giving developers insight that previously required a lot of sifting through logs (or a Pig expert) to piece together
+
+2.  Installing and Running Lipstick:
+
+    The following steps are required to install lipstick:
+    
+    Step1:  Download the source code from git repository
+        
+            cmd> git clone https://github.com/Netflix/Lipstick.git
+    
+    Step2:  Installing runtime dependencies
+            Install graphviz --> rich set of graph drawing tools
+    
+            Ubuntu: sudo apt-get install graphviz
+    
+            Cent OS: yum install graphviz
+            
+    
+
 
 
 
