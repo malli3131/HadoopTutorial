@@ -18,8 +18,8 @@
     
             Cent OS: yum install graphviz
             
+    Step3:  Start the server
+            cmd> cd <cloned listick repo> i.e cd Lipstick
+            cmd> ./gradlew debug -PwithHadoop
+            
     
-
-
-
-
