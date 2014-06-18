@@ -37,5 +37,11 @@
     Step6:  Install the apache tomcat to deploy lipstick war
     Step7:  Please increase the size of the war file to deploy in tomcat by modifying the webapps/manager/WEB-INF/web.xml to 100 MB (Default 
             allowed war size is 50 MB, but lipstick war more than 50 MB)
-    Step8:  We will see the lipstick web interface on http://hadoop:8080/lipstick-1.0/
+    Step8:  Run this command: hadoop jar lipstick-console-0.6-SNAPSHOT.jar -Dlipstick.server.url=http://hadoop:8080/lipstick-1.0
+    Step9:  We will see the lipstick web interface on http://hadoop:8080/lipstick-1.0/
+    
+    Step8 will take to the grunt shell, execute the pig latin statements, see the lipstick web interface....
+    
+    *******************Installation Part is done *********************************
+
     
