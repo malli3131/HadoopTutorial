@@ -17,9 +17,25 @@
             Ubuntu: sudo apt-get install graphviz
     
             Cent OS: yum install graphviz
-            
+    
+    Running Lipstick Locally....
+    -----------------------------
     Step3:  Start the server
             cmd> cd <cloned listick repo> i.e cd Lipstick
             cmd> ./gradlew debug -PwithHadoop
             
+            cmd> cd quickstart/
+            cmd> ../example1
+            
+    Running Lipstick on Hadoop Cluster....
+    --------------------------------------
+    Step4:  Install the MySQL database
+    Step5:  cmd> cd lipstick
+            cmd> ./gradlew
+            This will create the lipstic-x.x.war file in build directory of the lipstick home
+            
+    Step6:  Install the apache tomcat to deploy lipstick war
+    Step7:  Please increase the size of the war file to deploy in tomcat by modifying the webapps/manager/WEB-INF/web.xml to 100 MB (Default 
+            allowed war size is 50 MB, but lipstick war more than 50 MB)
+    Step8:  We will see the lipstick web interface on http://hadoop:8080/lipstick-1.0/
     
