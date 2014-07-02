@@ -1,0 +1,96 @@
+Download the nlp model for POS tagging... from OpenNLP or StandfordNLP
+
+package com.hadoop.nlp;
+
+import java.io.File;
+import java.io.IOException;
+
+import opennlp.tools.cmdline.PerformanceMonitor;
+import opennlp.tools.cmdline.postag.POSModelLoader;
+import opennlp.tools.postag.POSModel;
+import opennlp.tools.postag.POSSample;
+import opennlp.tools.postag.POSTaggerME;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+import org.apache.hadoop.util.GenericOptionsParser;
+
+public class MRPosTagger {
+
+	/**
+	 * @author nagamallikarjuna
+	 * @param args
+	 * @throws IOException
+	 */
+	public static String modelPath = "/home/hadoopz/naga/bigdata/nlp/en-pos-maxent.bin";
+
+	public static class MyMap extends Mapper<LongWritable, Text, Text, Text> {
+		Text emitKey = new Text();
+		Text emitValue = new Text();
+		POSModel model = null;
+		PerformanceMonitor monitor = null;
+		POSTaggerME tagger = null;
+
+		public void setup(Context context) throws IOException {
+			model = new POSModelLoader().load(new File(modelPath));
+			monitor = new PerformanceMonitor(System.err, "Sent");
+			tagger = new POSTaggerME(model);
+			monitor.start();
+		}
+
+		String line = "";
+
+		public void map(LongWritable key, Text value, Context context)
+				throws IOException, InterruptedException {
+			line = value.toString();
+			String document[] = line.split("\\t");
+			String tokens[] = document[1].split("\\s+");
+			String tags[] = tagger.tag(tokens);
+			// FileSplit fileSplit = (FileSplit)context.getInputSplit();
+			// String filename = fileSplit.getPath().toString();
+			POSSample posSamplle = new POSSample(tokens, tags);
+			String[] myTag = posSamplle.toString().split("\\s+");
+			String posword[] = null;
+			for (String tag : myTag) {
+				posword = tag.split("_");
+				if (posword.length == 2) {
+					emitKey.set(document[0] + "\t" + posword[0]);
+					emitValue.set(posword[1]);
+					context.write(emitKey, emitValue);
+				}
+			}
+		}
+	}
+
+	public static void main(String[] args) throws IOException,
+			InterruptedException, ClassNotFoundException {
+		Configuration conf = new Configuration();
+		String otherArgs[] = new GenericOptionsParser(conf, args)
+				.getRemainingArgs();
+		Job job = new Job(conf, "POS Tagger");
+		job.setJarByClass(MRPosTagger.class);
+
+		job.setMapperClass(MyMap.class);
+		job.setNumReduceTasks(0);
+
+		job.setOutputKeyClass(Text.class);
+		job.setOutputValueClass(Text.class);
+
+		job.setInputFormatClass(TextInputFormat.class);
+		job.setOutputFormatClass(TextOutputFormat.class);
+
+		FileInputFormat.addInputPath(job, new Path(otherArgs[0]));
+		FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
+
+		System.exit(job.waitForCompletion(true) ? 0 : 1);
+	}
+
+}
