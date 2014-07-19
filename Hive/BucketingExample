@@ -1,0 +1,13 @@
+set hive.enforce.bucketing = true;
+
+CREATE TABLE stocks_bucketed(market string, stock string, open double, high double, low double, close double, volume bigint, adj_close double) PARTITIONED BY(sdate STRING) CLUSTERED BY(stock) INTO 5 BUCKETS row format delimited fields terminated by '\t';
+
+
+
+insert into table stocks_bucketed partition(sdate) select market, stock, open,high,low,close,volume,adj_close,sdate from stocks;
+
+
+CREATE TABLE stocks_buck(market string, stock string, sdate STRING ,open double, high double, low double, close double, volume bigint, adj_close double) CLUSTERED BY(stock) INTO 10 BUCKETS row format delimited fields terminated by '\t';
+
+
+insert into table stocks_buck select market, stock, sdate, open,high,low,close,volume,adj_close from stocks;
