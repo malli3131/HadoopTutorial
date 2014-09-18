@@ -56,9 +56,11 @@ if __name__ == "__main__":
 Usage: 
 ------
 hadoop fs -put test.py /pydoop
-hadoop pipes -D hadoop.pipes.java.recordreader=true  -D hadoop.pipes.java.recordwriter=true -program /pydoop/test.py -input /pydoop/hdfs -output wordc
+hadoop pipes -D hadoop.pipes.java.recordreader=true  -D hadoop.pipes.java.recordwriter=true -program /pydoop/test.py 
+-input /pydoop/hdfs -output wordc
 
--> HDFS API: Pydoop allows us to connect to an HDFS installation, read and write files and get information on files, directories and global file system properties
+-> HDFS API: Pydoop allows us to connect to an HDFS installation, read and write files and get information on files, 
+directories and global file system properties
 
 
 Pydoop Script:
@@ -235,6 +237,7 @@ References:
 -----------
 http://pydoop.sourceforge.net/docs/index.html
 http://dl.acm.org/citation.cfm?doid=1851476.1851594
+http://hadoopecosystem.blogspot.in/2014/08/hadoop-streaming-utility-from-hadoop.html?spref=bl
 http://it-ebooks.info/book/1041/
 
 
