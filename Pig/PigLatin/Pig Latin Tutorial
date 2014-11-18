@@ -36,4 +36,44 @@ Pig Latin supports two types of casting:
 example: (datatype) exapression/field
           (double) A/B Both A and B are type int;
           
+Data Types:
+Pig Latin has two types of data types:
+1. Scalar Data Types
+2. Complex Data Types
 
+Scalar data Types: These are used to hold the scalar/atomic/primitive values. Some of the scalar data types are:
+int, long, float, double, chararray, bytearray, boolean, datetime etc..
+
+Complex data Types: These are used hold the multiple values of same or different type. We have three complex data types in Pig Latin
+They are:
+1. tuple
+2. map
+3. bag
+
+Tuple: It is an ordered collection of fields. It is denoted by (). It may conatin scalar or complex data types as it's
+field data types
+Map: It is key-value pair association. It is denoted by [].
+Bag: It is an unordered collection of tuples. It is also called a relation. It is denoted by {}. It uses both memeory and disk
+to store it's data. Naturally bag is very big data type in terms of values.
+
+Storage Types:
+Pig Latin has seveal storage types, which are used to parse the content while reading and writing from/to File System(HDFS)
+The following are some of the Storage Types:
+
+Storage Type:                 Read/Load           Store/Write
+--------------------------------------------------------------
+PigStorage                    Yes                 Yes
+HBaseStorage                  Yes                 Yes
+JsonStorage                   Yes                 Yes
+BinStorage                    Yes                 Yes
+HCatLoader                    Yes                 NO
+HCatStorer                    NO                  Yes
+SequenceLoader                Yes                 NO
+SequenceStorer                NO                  Yes
+ParquetLoader                 Yes                 NO
+ParquetStorer                 NO                  Yes
+JsonStorage                   Yes                 Yes                         
+TextLoader                    Yes                 NO
+AvroStorage                   Yes                 Yes
+TrevniStorage                 Yes                 Yes
+AccumuloStorage               Yes                 Yes
