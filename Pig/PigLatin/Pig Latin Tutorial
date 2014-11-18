@@ -170,3 +170,25 @@ transformations, aggregations, etc... These operators look like SQL Operators. T
           relation2 = group relation all;
    example:
           grpdata = group fltdata all;
+4. order by: Used to sort the data either in asc order or desc order
+   usage: relation2 = order relation1 by field [asc/desc] default asc order
+   example: orddata = order avgdata by avgrat desc;
+ 
+5. limit: used to limit the results to a particular number
+   usage: relation2 = limit relation1 n
+   example: lmtdata = limit orddata 10;
+   
+6. distinct: used to get the distnct values from the data. It works on only tuples.
+   usage: relation2  = distinct relation1;
+   Example: To get the distinct movies:
+   movies = load '/pig/movies' using PigStorage(':') as (mid:int, title:chararray, genre:chararray);
+   mproj = foreach movies generate title;
+   uniq = distinct mproj;
+   
+   Wrong One:  uniq = distinct movies.title;
+   
+ 7. Sample: Used to get the sample out of the total data. This sample represents the entire data. Here the sampling algorithm is
+    random sampling.
+    usage: relation2 = sample relation1 percentage;
+    example: sampldata = sample fltdata 0.1; it gets the 10% of the total data
+ 
