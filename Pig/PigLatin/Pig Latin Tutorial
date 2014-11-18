@@ -1,1 +1,18 @@
 Pig latin is a scripting like language offred by Pig Framework:
+
+Pig Latin Building Blocks:
+
+The following are building Blocks of Pig Latin:
+
+1. Comments
+2. Case Sensitivity / Case Insensitivity
+3. Casting
+4. Data Types
+5. Storage Types
+6. Relations, Schemas, Fields
+7. Operators
+8. Functions
+9. Macros
+10. Pig Latin Preprocessor
+11. Pig Compiler
+12. 
