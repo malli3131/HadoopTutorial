@@ -78,6 +78,8 @@ AvroStorage                   Yes                 Yes
 TrevniStorage                 Yes                 Yes
 AccumuloStorage               Yes                 Yes
 
+default storage type is PigStorage()
+PigStorage uses new line as record delimiter, tab as field delimiter by default.
 
 Relations, Schemas, Fields:
 Realtion: A relation is a bag. It is also a variable to reference the pig latin statements. In pig script, for all pig latin statements
@@ -93,3 +95,60 @@ fields can be accessed by using $0....$n notation i.e $o is column1, $1 is colum
 
 Manual: While loading the data from file system into pig, developer provides schema. This provided schema can be used in the
 following subsequent pig latin statements
+
+Fiedl: A field is a piece of data. It has name and value, name is aplhanumeric where as value is scalar or complex data type
+
+Operators:
+Pig Latin has two types of Operators:
+1. Input/Output Operators
+2. Relational Operators
+
+Input/Output Operators: These operators are used to load, store the data from/to file system (HDFS). These operators are
+only either reading or storing not for processing the data. The following are input and output operators:
+
+load - input - read the data from file system
+store - output - store the data into file system
+dump - output (it prints the data in console)
+
+Load Usage:
+----------
+relation = load 'path of the file in file system' using <storage type> as <schema>
+relation = load 'path of the file in file system' as <schema> [Default storage type used]
+relation = load 'path of the file in file system' using <storage type> [Automatic schema/ Pig Guessed Schema]
+relation = load 'path of the file in file system' [Default storage type used and Automatic schema/ Pig Guessed Schema]
+
+example:
+mydata = load '/pig/ratings' using PigStorage() as (uid:int, mid:int, rating:double, time:long);
+
+Pig Latin also offers two classes called LoadFunc, StoreFunc for developing custom input and output operators. These two classes
+can be extension points two extend the input and output operators.
+
+Relational Operators: These are used to perform the traditional data operations like projection, selection, filter, joining,
+transformations, aggregations, etc... These operators look like SQL Operators. The following are relational operators from Pig Latin
+
+1. foreach
+2. filter
+3. order by
+4. group by
+5. limit
+6. distinct
+7. sample
+8. split
+9. union
+10. cross
+11. cogroup
+12. flatten
+13. define
+14. cube
+15. assert
+16. parallel
+17. import
+18. join
+19. mapreduce
+20. stream
+21. rank
+
+1. foreach: It used to iterate the relations and performs the data transformations, projections, aggregations etc..
+   
+   Usage: relation2 = foreach <relation1> generate ....
+   Example: 
