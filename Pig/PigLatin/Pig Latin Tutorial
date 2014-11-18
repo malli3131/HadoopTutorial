@@ -191,4 +191,6 @@ transformations, aggregations, etc... These operators look like SQL Operators. T
     random sampling.
     usage: relation2 = sample relation1 percentage;
     example: sampldata = sample fltdata 0.1; it gets the 10% of the total data
+    
+ 8. 
  
