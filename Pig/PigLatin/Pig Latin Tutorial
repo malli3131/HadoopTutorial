@@ -15,4 +15,25 @@ The following are building Blocks of Pig Latin:
 9. Macros
 10. Pig Latin Preprocessor
 11. Pig Compiler
-12. 
+
+
+Comments:
+
+Pig Latin supports two types of comments
+1. Single line - SQL Style (--)
+2. Multi line - Java Style (/*....*/)
+
+Case Sensivity:
+Pig Latin neither case sensitive nor case insensitive. It is both, some of the things are case sensitive and some of the
+things are case insensitive.
+Case Sensitive examples are: Functions, relations, Storage types, fields etc...
+Case insensitive examples are: operators, keywords etc...
+
+Casting:
+Pig Latin supports two types of casting:
+1. Implicit casting: done by compiler. This works within the same data types family like int to long.
+2. Explicit casting: done by developer. This works across the data types like string to int, double to int etc..
+example: (datatype) exapression/field
+          (double) A/B Both A and B are type int;
+          
+
