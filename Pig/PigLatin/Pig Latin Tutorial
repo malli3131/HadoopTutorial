@@ -118,7 +118,7 @@ relation = load 'path of the file in file system' using <storage type> [Automati
 relation = load 'path of the file in file system' [Default storage type used and Automatic schema/ Pig Guessed Schema]
 
 example:
-mydata = load '/pig/ratings' using PigStorage() as (uid:int, mid:int, rating:double, time:long);
+mydata = load '/pig/ratings' using PigStorage(':') as (uid:int, mid:int, rating:double, time:long);
 
 Pig Latin also offers two classes called LoadFunc, StoreFunc for developing custom input and output operators. These two classes
 can be extension points two extend the input and output operators.
@@ -151,4 +151,22 @@ transformations, aggregations, etc... These operators look like SQL Operators. T
 1. foreach: It used to iterate the relations and performs the data transformations, projections, aggregations etc..
    
    Usage: relation2 = foreach <relation1> generate ....
-   Example: 
+   Example: mydata = load '/pig/ratings' using PigStorage() as (uid:int, mid:int, rating:double, time:long);
+            projdata = foreach mydata generate mid, rating;
+            
+2. filter: used to filter the data based on condition
+   usage: relation2 = filter relation1 by filed condition
+   example: fltdata = filter projdata by rating > 0.0;
+   
+3. group: used to group the data. This grouping can be done in two ways.
+          1. by field
+          2. by all
+   usage for by field:
+          relation2 = group relation by field;
+   example:
+          grpdata = group fltdata by mid;
+          
+   usage for all:
+          relation2 = group relation all;
+   example:
+          grpdata = group fltdata all;
