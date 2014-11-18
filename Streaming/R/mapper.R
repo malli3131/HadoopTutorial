@@ -1,6 +1,13 @@
 #!/usr/bin/env Rscript
-f <- file("stdin")
-open(f)
-while(length(line <- readLines(f,n=1)) > 0) {
-  write(line, stderr())
+
+trimWhiteSpace <- function(line) gsub("(^ +)|( +$)", "", line)
+splitIntoWords <- function(line) unlist(strsplit(line, "[[:space:]]+"))
+
+con <- file("stdin", open = "r")
+while (length(line <- readLines(con, n = 1, warn = FALSE)) > 0) {
+  line <- trimWhiteSpace(line)
+  words <- splitIntoWords(line)
+  for (w in words)
+      cat(w, "\t1\n", sep="")
 }
+close(con)
