@@ -77,3 +77,19 @@ TextLoader                    Yes                 NO
 AvroStorage                   Yes                 Yes
 TrevniStorage                 Yes                 Yes
 AccumuloStorage               Yes                 Yes
+
+
+Relations, Schemas, Fields:
+Realtion: A relation is a bag. It is also a variable to reference the pig latin statements. In pig script, for all pig latin statements
+before the opehand is called a relation name. Relations are must start with an alphabhet.
+Schema: Pig imposes schema on File System data while reading (i.e Read on Schema). This schema imposistion happens two ways,
+Those are:
+1. Automatic - Pig Guessed Schema
+2. Manual - Developer provided
+
+Automatic: While loading the data from file system into pig, if developer ignores schema, pig automatically guess schema
+for input data. This is schema conatins bytearray as data type for all the fields. All the field names are anonymous. These
+fields can be accessed by using $0....$n notation i.e $o is column1, $1 is column2 and $n is columnn+1 etc...
+
+Manual: While loading the data from file system into pig, developer provides schema. This provided schema can be used in the
+following subsequent pig latin statements
