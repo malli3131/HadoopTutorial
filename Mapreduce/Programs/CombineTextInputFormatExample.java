@@ -1,3 +1,6 @@
+/*
+This used to process the twitter data which was crawled by Flume.
+*/
 import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
