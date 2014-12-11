@@ -19,6 +19,183 @@ We have two states:
   1. Develop MapReduce Job
   2. Unit Testing
 
-Sample 
+Sample Mapreduce Application:
 
+This MapReduce job is used to count the SMS status Code counts where the CDRType is 1:
 
+Sample dataset:
+CDRID:CDRType:Phone1:Phone2:SMS Status Code
+655209:1:796764372490213:804422938115889:6
+353415:0:356857119806206:287572231184798:4
+835699:1:252280313968413:889717902341635:0
+
+SmsStatusCodeMR.java
+---------------------
+package com.hadoop.unit;
+
+import java.io.IOException;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+import org.apache.hadoop.util.GenericOptionsParser;
+
+public class SmsStatusCodeMR {
+	/**
+	 * @param args
+	 * @author Nagamallikarjuna
+	 * @throws IOException
+	 */
+	public static class MyMapper extends
+			Mapper<LongWritable, Text, Text, IntWritable> {
+		Text emitKey = new Text();
+		IntWritable emitvalue = new IntWritable();
+
+		public void map(LongWritable key, Text value, Context context)
+				throws IOException, InterruptedException {
+			String record = value.toString();
+			String cols[] = record.split(":");
+			if (cols.length == 5 && cols[1].equals("1")) {
+				emitKey.set(cols[4]);
+				emitvalue.set(1);
+				context.write(emitKey, emitvalue);
+			}
+			else{
+				context.getCounter(BadRecords.myCounter).increment(1);
+			}
+		}
+
+		static enum BadRecords {
+			myCounter;
+		};
+	}
+
+	public static class MyReducer extends
+			Reducer<Text, IntWritable, Text, LongWritable> {
+		LongWritable emitValue = new LongWritable();
+
+		public void reduce(Text key, Iterable<IntWritable> values,
+				Context context) throws IOException, InterruptedException {
+			int sum = 0;
+			for (IntWritable value : values) {
+				sum += value.get();
+			}
+			emitValue.set(sum);
+			context.write(key, emitValue);
+		}
+	}
+
+	public static void main(String args[]) throws IOException,
+			InterruptedException, ClassNotFoundException {
+		Configuration conf = new Configuration();
+		String userArgs[] = new GenericOptionsParser(conf, args)
+				.getRemainingArgs();
+		@SuppressWarnings("deprecation")
+		Job job = new Job(conf, "Status Code Counting.....");
+		job.setJarByClass(SmsStatusCodeMR.class);
+		job.setMapperClass(MyMapper.class);
+		job.setReducerClass(MyReducer.class);
+		job.setMapOutputKeyClass(Text.class);
+		job.setMapOutputValueClass(IntWritable.class);
+		job.setOutputKeyClass(Text.class);
+		job.setOutputValueClass(LongWritable.class);
+		job.setInputFormatClass(TextInputFormat.class);
+		job.setOutputFormatClass(TextOutputFormat.class);
+		FileInputFormat.addInputPath(job, new Path(userArgs[0]));
+		FileOutputFormat.setOutputPath(job, new Path(userArgs[1]));
+		System.exit(job.waitForCompletion(true) ? 0 : 1);
+	}
+}
+
+Compile and package the MR job as "sms.jar"
+
+Add the jars into classpath variable i.e CLASSPATH:
+sms.jar
+mockito-all-1.9.5.jar
+powermock-mockito-1.4.8-full.jar
+junit4.jar
+
+Test Class: MrUnitExample.java
+------------------------------
+package com.hadoop.unit;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mrunit.mapreduce.MapDriver;
+import org.apache.hadoop.mrunit.mapreduce.MapReduceDriver;
+import org.apache.hadoop.mrunit.mapreduce.ReduceDriver;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.hadoop.unit.SmsStatusCodeMR.MyMapper;
+import com.hadoop.unit.SmsStatusCodeMR.MyReducer;
+
+public class MrUnitExample {
+
+	MapDriver<LongWritable, Text, Text, IntWritable> mapDriver;
+	ReduceDriver<Text, IntWritable, Text, LongWritable> reduceDriver;
+	MapReduceDriver<LongWritable, Text, Text, IntWritable, Text, LongWritable> mapReduceDriver;
+
+	@Before
+	public void setup() {
+		MyMapper mapper = new MyMapper();
+		mapDriver = MapDriver.newMapDriver(mapper);
+		MyReducer reducer = new MyReducer();
+		reduceDriver = ReduceDriver.newReduceDriver(reducer);
+		mapReduceDriver = MapReduceDriver.newMapReduceDriver(mapper, reducer);
+	}
+
+	@Test
+	public void testMapper() throws IOException {
+		mapDriver.withInput(new LongWritable(), new Text(
+				"655209:1:796764372490213:804422938115889:6"));
+		mapDriver.withOutput(new Text("6"), new IntWritable(1));
+		mapDriver.runTest();
+	}
+
+	public void testReducer() throws IOException {
+		List<IntWritable> values = new ArrayList<IntWritable>();
+		values.add(new IntWritable(1));
+		values.add(new IntWritable(1));
+		reduceDriver.withInput(new Text("6"), values);
+		reduceDriver.withOutput(new Text("6"), new LongWritable(2));
+		reduceDriver.runTest();
+	}
+}
+
+Compile the Test class MrUnitExample.java
+
+javac MrUnitExample.java
+
+Run the Test using the following command:
+
+java org.junit.runner.JUnitCore com.hadoop.unit.MrUnitExample
+
+We will get the following messsage, if test case success...
+
+JUnit version 4.5
+..
+Time: 0.838
+
+OK (2 tests)
+
+here 2 tests are:
+  1. testMapper
+  2. testReducer
+
+if any failure in mappper or reducer test cases, we will some failure message
+
+...................Unit Testing with MRUnit is done...........
