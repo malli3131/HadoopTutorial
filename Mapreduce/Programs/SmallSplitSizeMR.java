@@ -15,7 +15,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
-public class DataGeneration {
+public class SmallSplitSizeMR {
 
 	public static class MyMapper extends Mapper<LongWritable, Text, Text, Text> {
 		int rowNums = 0;
@@ -81,8 +81,8 @@ public class DataGeneration {
 		conf.setInt("mapred.tasktracker.map.tasks.maximum", 4);
 		conf.setInt("rows", Integer.valueOf(userArgs[2]));
 		
-		Job job = new Job(conf, "Data Generation");
-		job.setJarByClass(DataGeneration.class);
+		Job job = new Job(conf, "Using small split size than split size as hdfs block size");
+		job.setJarByClass(SmallSplitSizeMR.class);
 
 		job.setMapperClass(MyMapper.class);
 		job.setNumReduceTasks(0);
