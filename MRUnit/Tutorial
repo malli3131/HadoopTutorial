@@ -1,0 +1,24 @@
+MRUnit is a unit level testing framework to perform unit level testing on Apache Hadoop MapReduce Jobs...
+MRUnit 1.1.0 is latest version, it has support for Hadoop-1.O and Hadoop-2.O.
+MRUnit works like JUnit.
+Apache MRUnit is one of the Top Level Project in ASF (Apache Software Foundation).
+
+Download and Installation:
+--------------------------
+Download the tar file from apache mrunit website (choose proper version based on Hadoop Version)
+Build the src using maven:
+mvn clean package -Dtar -DskipTests
+After successful build, then copy the mrunit jars from target to hadoop lib.
+Download the mockito-all-1.9.5.jar link: http://code.google.com/p/mockito/
+Download the powermock-mockito-1.4.8-full.jar
+Download the  junit
+
+Developing and Testing a Sample Application using MRUnit:
+
+We have two states:
+  1. Develop MapReduce Job
+  2. Unit Testing
+
+Sample 
+
+
