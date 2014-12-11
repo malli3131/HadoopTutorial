@@ -36,12 +36,12 @@ public class UserDefinedCounters {
 				context.write(emitKey, emitvalue);
 			}
 			else{
-				context.getCounter(CDRCounter.NonSMSCDR).increment(1);
+				context.getCounter(BadRecords.myCounter).increment(1);
 			}
 		}
     //Use enum to declare the counter names and use these counters inside in map method.....
-		static enum CDRCounter {
-			NonSMSCDR;
+		static enum BadRecords {
+			myCounter;
 		};
 	}
 
