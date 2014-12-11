@@ -1,5 +1,3 @@
-package com.impetus.data.generate;
-
 import java.io.IOException;
 import java.util.Random;
 
