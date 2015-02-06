@@ -1,2 +1,10 @@
 Apache Zookeeper is an open source project from Apache Software Foundation
-Apache Zookeepr is distributed coordination service which used to build general purpose distributed applications.
+Apache Zookeepr is distributed coordination service which is used to build general purpose distributed applications.
+
+In distributed systems, partial failures are common. In distibuted systems, many nodes communicate each other, some these 
+operations may fail and sender doen't know the staus of the message. To guaranty the communication between nodes, we need 
+very realiable coordination service.
+
+ZooKeeper can’t make partial failures go away, these are intrinsic to distributed systems. Zookeeper handles all these
+partial failures and it connot hide them.
+
