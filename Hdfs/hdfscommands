@@ -46,7 +46,7 @@ Example:-
 Cmd> hadoop fs -lsr <path>: 	
 Recursively list the contents that match the specified file pattern.  Behaves very similarly to hadoop fs -ls, except that the data is shown for all the entries in the subtree.
 Example:- 
-•	hadoop fs -ls /  ---> This command lists all the files Recursively under the root directory of HDFS
+•	hadoop fs -lsr /  ---> This command lists all the files Recursively under the root directory of HDFS
 
 Cmd> hadoop fs -du <path>:	
 Show the amount of space, in bytes, used by the files that match the specified file pattern.  Equivalent to the unix command "du -sb <path>/*" in case of a directory, and to "du -b <path>" in case of a file. The output is in the form name(full path) size (in bytes)
