@@ -1,0 +1,17 @@
+In general most of the input data fits with scalar data types, but some times we have to deal with complex input data sets like
+
+(3,8,9) (4,5,6)
+(1,4,7) (3,7,5)
+(2,5,8) (9,5,8)
+
+mydata = LOAD '/pig/data' AS (col1:tuple(n11:int, n12:int,n13:int),col2:tuple(n21:int,t22:int,t23:int));
+projdata = foreach mydata generate col1.n11 as num1, col2.n21 as num2;
+
+
+Base ball data example
+a sample record is:
+
+Jorge Posada    New York Yankees        {(Catcher),(Designated_hitter)} [games#1594,hit_by_pitch#65,on_base_percentage#0.379,grand_slams#7,home_runs#243,at_bats#5365,sacrifice_flies#43,gdb#163,sacrifice_hits#1,ibbs#71,base_on_balls#838,hits#1488,rbis#964,slugging_percentage#0.48,batting_average#0.277,triples#9,doubles#342,strikeouts#1278,runs#817]
+
+baseball = load '/pig/baseball' as (name:chararray, team:chararray, postition:bag{t:(p:chararray)}, bat:map[]);
+mydata = foreach baseball generate name, bat#'base_on_balls' - bat#'ibbs'
