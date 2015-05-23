@@ -14,7 +14,7 @@ To configure Fair Schedular, we need to do the following things:
 
 <property>
       <name>mapred.jobtracker.taskScheduler</name>
-      <value>org.apache.hadoop.mapred.CapacityTaskScheduler</value>
+      <value>org.apache.hadoop.mapred.FairScheduler</value>
       <description>This overrides the default schedular FIFO with Capacity Schedular</description>
     </property>
     
@@ -24,3 +24,5 @@ To configure Fair Schedular, we need to do the following things:
       <description>Specify the specific queue to submit the job instead of submitting to default queue.</description>
     </property>
 
+2. Changes to fair-scheduler.xml
+---------------------------------
