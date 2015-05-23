@@ -1,1 +1,7 @@
-This is the Fair Schedular Configuration
+It is a pluggable MapReduce resource schedular
+It distributes computing resources among the pools in a faired manner.
+It was created by Mataei Zaharia at Facebook.
+It is a flexible resource schedular
+
+Configuring Fair Schedular:
+
