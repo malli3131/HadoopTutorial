@@ -1,0 +1,13 @@
+assert operator example
+
+sample data set is: 
+
+1,2,3
+4,2,1
+8,3,4
+4,3,3
+7,2,5
+8,4,3
+
+mydata = load '/pig/nums' using PigStorage(',') as (n1:int, n2:int, n3:int);
+ASSERT mydata by n1 > 2, 'n1 should be greater than 2';
