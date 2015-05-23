@@ -27,7 +27,7 @@ dump highdivs;
 
 we can also ship the external program using the following statement:
 
-define highdivs `/home/naga/bigdata/highdiv.pl` ship('highdiv.pl');
+define highdivs `/home/naga/bigdata/highdiv.pl` ship('/home/naga/bigdata/highdiv.pl');
 
 divs = load '/pig/divs' as (exchange, symbol, date, dividends);
 highdivs = stream divs through highdivs as (exchange, symbol, date, dividends);
