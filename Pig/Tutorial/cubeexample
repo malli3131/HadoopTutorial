@@ -1,0 +1,15 @@
+cube operator example
+
+sample data:
+
+car, 2012, midwest, ohio, columbus, 4000
+car, 2013, midwest, texas, austin, 5000
+car, 2014, midwest, ohio, columbus, 6000
+car, 2011, midwest, california, palo alto, 14000
+car, 2012, midwest, ohio, columbus, 3000
+
+example:
+
+cars = load '/pig/cars' as (product:chararray, year:int, region:chararray, state:chararray, city:chararray, sales:long);
+cubedata = CUBE cars BY CUBE(product,year);
+result = FOREACH cubedata GENERATE FLATTEN(group), SUM(cube.sales) AS totalsales;
