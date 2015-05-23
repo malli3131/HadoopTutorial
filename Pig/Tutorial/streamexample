@@ -1,0 +1,25 @@
+stream operator example:
+
+Download the dataset NYSE_dividends from alangates programming pig data folder:
+https://github.com/alanfgates/programmingpig/blob/c77436c2d0416574966a2e9925b4ee4b6eb5caca/data/NYSE_dividends
+
+
+write a perl program to enable control: "highdiv.pl"
+
+#!/usr/bin/perl
+
+use strict;
+
+while (<>) {
+	my @fields = split;
+	if ($fields[3] > 1.0) {
+		print join("\t", @fields) . "\n"
+	}
+}
+
+change the file permission of perl script:
+chmod 755 <path>/highdiv.pl
+
+divs = load '/pig/divs' as (exchange, symbol, date, dividends);
+highdivs = stream divs through `/home/naga/bigdata/highdiv.pl` as (exchange, symbol, date, dividends);
+dump highdivs;
