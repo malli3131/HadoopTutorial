@@ -10,7 +10,7 @@ Hadoop has 4 types of schedulars
   
 In Hadoop jobs are submitted to Queues. Queues are submitting jobs to Hadoop Cluster By default the queue name is called default.
 
-COnfiguring Capacity Schedular:
+Configuring Capacity Schedular:
 -------------------------------
 
 To configure Capacity Schedular, we need to do the following things:
