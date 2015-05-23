@@ -1,0 +1,24 @@
+mapreduce operator example:
+----------------------------
+Download the data NYSE_daily from alangates programming pig data folder:
+https://github.com/alanfgates/programmingpig/blob/c77436c2d0416574966a2e9925b4ee4b6eb5caca/data/NYSE_daily
+
+We have already a MapReduce program for computing aggregated volume for stock i.e volume.jar
+
+Use this MapReduce program inside pig script and no need to develop the same logic in PigLatin
+
+
+example:
+
+stocks = load '/pig/stocks' as (market:chararray, stock:chararray, sdate:chararray, open:double, high:double, low:double, close:double, volume:long, adj_close:double);
+
+aggdata = mapreduce '/home/naga/bigdata/volume.jar' store stocks into '/pig/mystocks' load '/pig/aggvolume' as (stock:chararray, aggvolume:long) `StockTotalVolume /pig/mystocks /pig/aggvolume`;
+
+
+The above pig latin statement broken as follows:
+
+1. store stocks into '/pig/mystocks'
+2. hadoop jar /home/naga/bigdata/volume.jar StockTotalVolume /pig/mystocks /pig/aggvolume
+3. aggdata = load '/pig/aggvolume' as (stock:chararray, aggvolume:long);
+
+In simple words.. PigLatin statements ----> MapReduce Job ---> PigLatin statements
