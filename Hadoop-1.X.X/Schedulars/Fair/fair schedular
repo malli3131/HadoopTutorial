@@ -5,4 +5,22 @@ It is a flexible resource schedular
 
 Configuring Fair Schedular:
 
+To configure Fair Schedular, we need to do the following things:
+
+1. Change/Add some of the configuration parameters in mapred-site.xml
+2. Change/Add queues information in the capacity-scheduler.xml
+
+1. Changes to mapred-site.xml
+
+<property>
+      <name>mapred.jobtracker.taskScheduler</name>
+      <value>org.apache.hadoop.mapred.CapacityTaskScheduler</value>
+      <description>This overrides the default schedular FIFO with Capacity Schedular</description>
+    </property>
+    
+    <property>
+      <name>mapred.job.queue.name</name>
+      <value>india</value>
+      <description>Specify the specific queue to submit the job instead of submitting to default queue.</description>
+    </property>
 
