@@ -1,0 +1,256 @@
+Installing Hadoop, Spark, Pydoop:
+---------------------------------
+To install all three softwares, we need to install some pre-requisite softwares; they are
+
+1. Java JDK
+2. Scala
+3. Python pip [Python is already installed]
+4. ssh
+
+Use the ubuntu package installer apt-get (yum in cent OS)
+
+Run the following commands:
+
+cmd> sudo apt-get update
+
+cmd> sudo apt-get install ssh
+
+cmd> sudo apt-get install vim
+
+cmd> sudo apt-get install python-pip
+
+cmd> sudo apt-get install openjdk-7-jdk
+
+cmd> Download the Scala-2.10.3 and extract it to some directory
+
+cmd> Download the Hadoop-2.2.0 and extract it to some directory
+
+cmd> Download the Spark-1.0.0 and extract it to some directory
+
+Create environment variable JAVA_HOME, HADOOP_HOME, SCALA_HOME, SPARK_HOME and add all the excutables of these softwares into system PATH variable.
+Put all these varaible in .bashrc file. The .bashrc is located in linux home directory(/home/$USER)
+
+export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
+export HADOOP_HOME=/home/naga/bigdata/hadoop-2.2.0
+export SCALA_HOME=/home/naga/bigdata/scala-2.10.3
+export SPARK_HOME=/home/naga/bigdata/spark-1.0.0
+export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$SCALA_HOME/bin:$SPARK_HOME/bin
+
+Create the password less ssh:
+
+cmd> ssh-keygen -t rsa -> it will create private and public keys in .ssh directory. The .ssh directory is located in linux home directory(/home/$USER).
+
+cmd> go to .ssh directory
+
+copy the id_rsa.pub (public key) into authorized_keys file.
+
+cmd> cp id_rsa.pub authorized_keys
+
+Test the ssh is working are not? using the following command
+
+ssh hostname (hostname of your computer)
+
+Installing Hadoop:
+-----------------
+Modify the core-site.xml, hdfs-site.xml, mapred-site.xml, yarn-site.xml, slaves, hadoop-env.sh, yarn-env.sh to add the corresponding configuration parameters, environment variables etc. All these files
+are under $HADOOP_HOME/etc/hadoop directory
+
+change the permissions to 755 recursively
+
+cmd> chmod -R 755 *
+
+Format the hdfs:
+
+cmd> hdfs namenode -format
+
+start the hadoop:
+
+cmd> start-all.sh
+
+check hadoop is working or not?
+
+cmd> jps
+
+we will all daemons are running like below:
+
+16188 ResourceManager
+16048 SecondaryNameNode
+15735 NameNode
+16316 NodeManager
+15873 DataNode
+16598 Jps
+
+cmd> hadoop fs -ls /
+cmd> hadoop fs -mkdir /pydoop
+cmd> hadoop fs -ls /
+
+
+Installing Spark:
+-----------------
+create the spark-env.sh file from spark-env.sh.template file in the conf directory of Spark.
+modify the file spark-env.sh to add the following env variables
+SCALA_HOME
+HADOOP_HOME
+JAVA_HOME
+
+Modify the slaves file to  enter slave machine name.
+
+Modify the $SPARK_HOME/project/SparkBuild.scala file to add the hadoop, yarn, java, other software versions correctly.
+
+val DEFAULT_HADOOP_VERSION = "2.2.0"
+val SPARK_HADOOP_VERSION="2.2.0"
+val SPARK_YARN=true
+
+val SCALAC_JVM_VERSION = "jvm-1.7"
+val JAVAC_JVM_VERSION = "1.7"
+
+Run the following command
+
+$SPARK_HOME/sbt/sbt assembly
+
+Spark Installation is done:
+
+start the spark:
+
+cmd> $SPARK_HOME/sbin/start-all.sh
+
+Testing whether spark is running or not?
+
+cmd> jps
+
+we see two daemons
+Worker
+Master
+
+Installing Pydoop:
+------------------
+
+cmd> sudo apt-get install libboost-dev
+
+cmd> sudo apt-get install libboost-python1.54
+
+cmd> sudo apt-get install openssl
+
+cmd> sudo apt-get install libssl-dev
+
+cmd> sudo chmod -R 777 /usr/local/
+
+cmd> sudo chmod -R 777 /usr/local/lib/python2.7/dist-packages/
+ 
+cmd> pip install pydoop
+
+
+cmd> sudo chmod -R 755 /usr/local/
+
+cmd> sudo chmod -R 755 /usr/local/lib/python2.7/dist-packages/
+
+
+
+
+Python over Hadoop:
+-------------------
+
+Hadoop Streaming  --  is the fastest and most transparent option, and the best one for text processing
+One of the disadvantages of using Streaming directly is that while the inputs to the reducer are grouped by key, they are still iterated over line-by-line, and the boundaries between keys must be detected by the user.
+
+-jobconf stream.num.map.output.key.fields=3
+-jobconf stream.num.reduce.output.key.fields=3
+
+the Python frameworks all perform their own serialization/deserialization that can consume additional resources in a non-transparent way
+The disadvantage of Streaming is that everything must be done manually
+support for binary data is not trivial.
+
+
+mrjob -- is best for rapidly working on Amazon EMR
+
+mrjob is an open-source Python framework that wraps Hadoop Streaming and is actively developed by Yelp
+mrjob’s integration with EMR is incredibly smooth and easy (using the boto package -- Boto is a Python package that provides interfaces to Amazon Web Services)
+dumbo -- is convenient for more complex jobs
+hadoopy
+pydoop
+happy = Hadoop + Python -- is a framework for writing Hadoop jobs through Jython 
+
+Most of the Python frameworks wrap Hadoop Streaming, while others wrap Hadoop Pipes or implement their own alternatives
+
+
+python wordcount.py ../README.rst -r hadoop > counts
+
+./wordcount.py -r hadoop --hadoop-bin hadoop --jobconf mapred.reduce.tasks=1 -o hdfs://hadoop:9000/mrjob/readme hdfs://hadoop:9000/mrjob/wordcount
+
+
+
+
+
+Both streaming and pipes do very similar things.  They will fork/exec a
+> separate process that is running whatever you want it to run.  The JVM that
+> is running hadoop then communicates with this process to send the data over
+> and get the processing results back.  The difference between streaming and
+> pipes is that streaming uses stdin/stdout for this communication so
+> preexisting processing like grep, sed and awk can be used here.  Pipes uses
+> a custom protocol with a C++ library to communicate.  The C++ library is
+> tagged with SWIG compatible data so that it can be wrapped to have APIs in
+> other languages like python or perl.
+
+Hadoop Pipes is the name of the C++ interface to Hadoop MapReduce. Unlike Streaming, which uses standard input and output to communicate with the map and reduce code, Pipes uses sockets as the channel over which the tasktracker communicates with the process running the C++ map or reduce function. JNI is not used.
+
+
+Apache Hadoop provides an adapter layer called pipes which allows C++ application code to be used in MapReduce programs. Applications that require high numerical performance may see better throughput if written in C++ and used through Pipes.
+
+Pipes is an API that provides close coupling between C++ application code and Hadoop
+
+Streaming is a generic API that allows programs written in virtually any language to be used as Hadoop Mapper and Reducer implementations.
+
+
+
+
+
+Dumbo:
+------
+
+Dumbo is a project that allows you to easily write and run Hadoop programs in Python (it’s named after Disney’s flying circus elephant, since the logo of Hadoop is an elephant and Python was named after the BBC series “Monty Python’s Flying Circus”). More generally, Dumbo can be considered to be a convenient Python API for writing MapReduce programs.
+
+Installation:
+-------------
+git clone https://github.com/klbostee/dumbo.git
+cd dumbo
+sudo python setup.py install
+
+
+dumbo start example.py -input data -output yearcount
+
+dumbo start example.py -hadoop /home/naga/bigdata/hadoop-2.2.0/ -hadooplib /home/naga/bigdata/hadoop-2.2.0/share/hadoop/tools/lib/ -input /dumbo/data -output /dumbo/yearcount
+
+dumbo cat /dumbo/yearcount/part* -hadoop /home/naga/bigdata/hadoop-2.2.0/ -hadooplib /home/naga/bigdata/hadoop-2.2.0/share/hadoop/tools/lib/
+
+
+dumbo start volume.py -hadoop /home/naga/bigdata/hadoop-2.2.0/ -hadooplib /home/naga/bigdata/hadoop-2.2.0/share/hadoop/tools/lib/ -input /dumbo/stocks -output /dumbo/volume
+
+	
+dumbo start example.py
+        -hadoop hadoop bin location
+        -hadooplib streaming jar location
+        -numreducetasks 10 
+        -input input in hdfs
+        -output output in hdfs 
+        -outputformat text 
+        -inputformat text
+
+Streaming:
+----------
+No Installation
+
+hadoop jar /home/naga/bigdata/hadoop-2.2.0/share/hadoop/tools/lib/hadoop-streaming-2.2.0.jar --input /streaming/stocks --output /streaming/volume --mapper 'python /home/naga/bigdata/streaming/mapper.py' --reducer 'python /home/naga/bigdata/streaming/reducer.py'
+
+hadoop jar $HADOOP_HOME/contrib/streaming/hadoop-streaming-1.0.3.jar --input /streaming/news --output /streaming/pystream
+--mapper 'python /home/naga//bigdata/streaming/mapper.py' --reducer 'python /home/naga//bigdata/streaming/reducer.py'
+
+
+links:
+------
+https://github.com/Yelp/mrjob
+https://github.com/cloudera/python-ngrams/blob/master/mrjob/ngrams.py
+https://github.com/klbostee/dumbo/wiki
+http://blog.cloudera.com/blog/2013/01/a-guide-to-python-frameworks-for-hadoop/
+http://cs.smith.edu/dftwiki/index.php/Hadoop_Tutorial_2.2_--_Running_C%2B%2B_Programs_on_Hadoop
+https://github.com/klbostee/dumbo/wiki/Short-tutorial
+http://storageconference.org/2008/presentations/1.Monday-Tutorials/4.3.Lopez.pdf
