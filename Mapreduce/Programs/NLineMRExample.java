@@ -14,6 +14,8 @@ import org.apache.hadoop.util.GenericOptionsParser;
 public class NLineMRExample {
 
 	/**
+	 * This MR Job uses NLineInputFormat, It controls the number of splits based on the number of Lines.
+	 * Split = N lines by default N = 1
 	 * @param args
 	 */
 	public static class MapClass extends Mapper<LongWritable, Text, LongWritable, Text>
