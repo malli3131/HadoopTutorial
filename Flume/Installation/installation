@@ -24,15 +24,15 @@ agent.sources.source.interceptors.a.type = org.apache.flume.interceptor.Timestam
 agent.sinks.sink.type=hdfs
 agent.sinks.sink.hdfs.path=hdfs://SDL-Ubuntu-1:9000/flume
 agent.sinks.sink.hdfs.file.Type=DataStream
-agent.sinks.sink.hdfs.batchSize = 20000000
-agent.sinks.sink.hdfs.rollCount = 500000000
-agent.sinks.sink.hdfs.rollSize = 1000000000
-agent.sinks.sink.hdfs.rollInterval = 10000
+agent.sinks.sink.hdfs.batchSize = 100
+agent.sinks.sink.hdfs.rollCount = 0
+agent.sinks.sink.hdfs.rollSize = 100
+agent.sinks.sink.hdfs.rollInterval = 0
 agent.sinks.sink.hdfs.writeFormat = Text
 
 agent.channels.memorychannel.type=memory
-agent.channels.memorychannel.capacity=10000
-agent.channels.memorychannel.transactionCapacity=1000
+agent.channels.memorychannel.capacity=100
+agent.channels.memorychannel.transactionCapacity=100
 
 agent.sources.source.channels=memorychannel
 agent.sinks.sink.channel=memorychannel
