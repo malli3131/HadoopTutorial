@@ -1,13 +1,11 @@
+CREATE TABLE stocks( market string, stock  string, sdate date, sopen double, shigh double, slow double, sclose double, volume bigint, ad_close double) row format delimited fields terminated by '\t';
+
+CREATE TABLE bucketed_stocks( market string, stock  string, sdate date, sopen double, shigh double, slow double, sclose double, volume bigint, ad_close double) COMMENT 'A bucketed sorted stocks table' CLUSTERED BY (stock) SORTED BY (volume) INTO 32 BUCKETS STORED AS textfile;
+
+load data local inpath '/root/naga/stocks' into table stocks
+
+select * from stocks limit 10;
+
 set hive.enforce.bucketing = true;
 
-CREATE TABLE stocks_bucketed(market string, stock string, open double, high double, low double, close double, volume bigint, adj_close double) PARTITIONED BY(sdate STRING) CLUSTERED BY(stock) INTO 5 BUCKETS row format delimited fields terminated by '\t';
-
-
-
-insert into table stocks_bucketed partition(sdate) select market, stock, open,high,low,close,volume,adj_close,sdate from stocks;
-
-
-CREATE TABLE stocks_buck(market string, stock string, sdate STRING ,open double, high double, low double, close double, volume bigint, adj_close double) CLUSTERED BY(stock) INTO 10 BUCKETS row format delimited fields terminated by '\t';
-
-
-insert into table stocks_buck select market, stock, sdate, open,high,low,close,volume,adj_close from stocks;
+insert into bucketed_stocks select * from stocks;
