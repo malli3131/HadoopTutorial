@@ -2,7 +2,7 @@ TwitterAgent.sources = Twitter
 TwitterAgent.channels = MemChannel
 TwitterAgent.sinks = HDFS
 
-TwitterAgent.sources.Twitter.type = com.cloudera.flume.source.TwitterSource
+TwitterAgent.sources.Twitter.type = org.apache.flume.source.twitter.TwitterSource
 TwitterAgent.sources.Twitter.channels = MemChannel
 TwitterAgent.sources.Twitter.consumerKey = gf36MaDNvSW0znF80X9qc1R0y
 TwitterAgent.sources.Twitter.consumerSecret = W2GPe5VU3FhdGtdymthKdLbjaOf84XdUbZX1AsbmmlaoZTZmsa
