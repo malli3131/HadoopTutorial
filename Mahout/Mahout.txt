@@ -75,7 +75,7 @@ export MAHOUT_LOCAL=
 hadoop fs -rmr /genpact 
 hadoop fs -mkdir /genpact 
 hadoop fs -put reuters-seq/ /genpact/ 
-mahout seq2sparse -i /genpact/reuters-seq/ -o reuters-out-seqdir-sparse-kmeans --maxDFPercent 85 --namedVector 
+mahout seq2sparse -i /genpact/reuters-seq/ -o  /genpact/reuters-out-seqdir-sparse-kmeans --maxDFPercent 85 --namedVector 
 mahout kmeans -i /genpact/reuters-out-seqdir-sparse-kmeans/tfidf-vectors/ -c /genpact/reuters-kmeans-clusters -o /genpact/reuters-kmeans/ -dm org.apache.mahout.common.distance.CosineDistanceMeasure -x 10 -k 20 -ow --clustering 
 mahout clusterdump -s /genpact//reuters-kmeans/clusters-*-final -d /reuters-out-seqdir-sparse-kmeans/dictionary.file-0 -dt sequencefile -b 100 -n 20 --evaluate -dm org.apache.mahout.common.distance.CosineDistanceMeasure --pointsDir /genpact/reuters-kmeans/clusteredPoints 
 mahout trainlogistic --passes 100 --rate 50 --lambda 0.001 --input /home/hadoopz/naga/datasets/adult.csv --output adults.model --target salgroup --categories 2 --predictors age sex hours-per-week --types n n n 
