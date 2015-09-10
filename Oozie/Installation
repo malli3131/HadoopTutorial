@@ -17,11 +17,12 @@ Installing Oozie using Embedded Tomcat Server and Embedded Derby DataBase:
    Hadoop 0.20.2+
    Pig 0.7+
    
-   Oozie offers a shell script called "mkdistro.sh" to build Oozie and this script is available in $OOZIE_HOME/bin
+   i). Oozie offers a shell script called "mkdistro.sh" to build Oozie and this script is available in $OOZIE_HOME/bin
    run> bin/mkdistro.sh -DskipTests --> Running mkdistro.sh will create the binary distribution of Oozie. By default, 
    Oozie war will not contain hadoop and hcatalog libraries, however they are required for oozie to work.
+   Note: Add Hadoop and HCatalog jars at the time of Oozie installation.
    
-   2. We can also build with -Puber which will bundle the required libraries in the oozie war. Further, the following 
+   ii). We can also build with -Puber which will bundle the required libraries in the oozie war. Further, the following 
    options are available to customise the versions of the dependencies:
 
    -P<profile> - default hadoop-1. 
@@ -42,3 +43,5 @@ Installing Oozie using Embedded Tomcat Server and Embedded Derby DataBase:
    -Dcurator.version=<version> - default 2.5.0
    -Dhive.version=<version> - default 0.13.1
    -Dhbase.version=<version> - default 0.94.2
+   
+   
