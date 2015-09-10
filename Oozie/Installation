@@ -10,4 +10,12 @@ Installing Oozie using Embedded Tomcat Server and Embedded Derby DataBase:
    tar -xvf oozie-4.1.0.tar.gz
    mv oozie-4.1.0 ~/bigdata
 
-3.
+3. Building Oozie: To build Oozie, it requires the following pre requisite softwares
+   Unix box (tested on Mac OS X and Linux)
+   Java JDK 1.6+
+   Maven 3.0.1+
+   Hadoop 0.20.2+
+   Pig 0.7+
+   
+   Oozie offers a shell script called "mkdistro.sh" to build Oozie and this script is available in $OOZIE_HOME/bin
+   run> bin/mkdistro.sh -DskipTests --> Running mkdistro.sh will create the binary distribution of Oozie. By default,    Oozie war will not contain hadoop and hcatalog libraries, however they are required for oozie to work.
