@@ -1,0 +1,19 @@
+1. Oozie is a Server based Workflow Engine which runs workflow of Jobs (DAG) with actions that run Hadoop MapReduce, Pig,
+   Hive,Spark Jobs, etc...
+
+2  Oozie is Java Web application and it runs in any Servlet container like Tomcat, Jetty, etc...
+
+3. Oozie workflow is a collection of actions (Exec, Java, Pig, Spark etc...) arranged in a control dependency DAG.
+
+4. In Oozie workflow actions are dependent. i.e., second action cannot run until the first action has completed
+
+5. Oozie workflows definitions are written in hPDL (a XML Process Definition Language)
+
+6. Oozie workflow actions start jobs in remote systems (i.e. Hadoop, Pig). Upon action completion, the remote systems 
+   callback Oozie to notify the action completion, at this point Oozie proceeds to the next action in the workflow.
+
+7  Oozie workflow contains two types of nodes:
+      . Action Nodes
+      . Control Nodes
+
+8
