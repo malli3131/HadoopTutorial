@@ -1,0 +1,16 @@
+#include <stdio.h>
+#include <string.h>
+
+struct Books{
+    char name[100];
+    char author[40];
+    int id;
+};
+
+void main(){
+    struct Books book;
+    strcpy(book.name, "Hadoop Programming");
+    strcpy(book.author, "Naga");
+    book.id = 200;
+    printf("Book Name: %s\n", book.name);
+}
