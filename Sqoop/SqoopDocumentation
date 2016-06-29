@@ -113,6 +113,10 @@ Sqoop Commands Uasage:
     sqoop import --connect jdbc:mysql://localhost:3306/hadoop --username root -P --table stocks -m 1 --target-dir /sqoop/stocks
     
     The above command will import the stocks table data into an HDFS directory called /sqoop/stocks
+    
+    sqoop-import -D mapreduce.job.reduces=2 --connect jdbc:mysql://10.17.80.90:3306/hadoop --username root --password root
+    --table people --hbase-create-table --hbase-table people --column-family info --split-by sno --hbase-row-key sno -hbase-bulkload 
+    -m 2 --target-dir /mydir/docbulkload
  
 7. export
 
