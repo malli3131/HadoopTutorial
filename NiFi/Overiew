@@ -17,3 +17,5 @@ NiFi Features: Apache NiFi supports powerful and scalable directed graphs of dat
 	5. Secure
 		SSL, SSH, HTTPS, and encrypted content etc...
 		Multi-tenant authorization and internal authorization/policy management
+		
+
