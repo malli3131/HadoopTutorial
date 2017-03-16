@@ -1,0 +1,19 @@
+Apache NiFi is an easy to use, powerful, reliable system to process and distribute the data.
+
+NiFi Features: Apache NiFi supports powerful and scalable directed graphs of data routing, transformation, and system mediation logic. The following are some of the capabilities and Objectives of Apache NiFi.
+	1. Web based user interface
+		seamless experience between design, control, feedback and monitoring
+	2. Highly configurable
+		Loss tolerant vs guaranteed delivery
+		Low latency vs high throughput
+		Dynamic prioritization
+		Flow can be modified at runtime
+		Back pressure
+	3. Data Provenance
+		Tracked dataflow from beginning to end
+	4. Designed for extension
+		Build your own processors and more
+		Enables rapid development and effective testing
+	5. Secure
+		SSL, SSH, HTTPS, and encrypted content etc...
+		Multi-tenant authorization and internal authorization/policy management
