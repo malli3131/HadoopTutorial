@@ -1,0 +1,21 @@
+Sample data:
+------------
+"naga"|"30"|"bnaglore"
+"ravi"|"30"|"bnaglore"
+"hari"|"30"|"bnaglore"
+"siva"|"30"|"bnaglore"
+"raja"|"30"|"bnaglore"
+
+Removing the double quotes while loading the data into Hive Table:
+
+DROP table people;
+CREATE TABLE people(name varchar(50), age int, place varchar(50))
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+WITH SERDEPROPERTIES 
+(
+    "separatorChar" = "|",
+    "quoteChar"     = "\""
+)STORED AS TEXTFILE;
+
+load DATA INPATH '/nyse/people' INTO TABLE people;
+select * FROM people
