@@ -1,0 +1,125 @@
+External VS Internal Tables:
+
+Lets take the analogy of cloud computing vs traditional computing.
+
+In traditional days, everything was set up in house. Servers, DBs, Web servers etc. so you are only responsible for
+these resources. You manage them and if your contract expire with client, these resources are of no use and 
+become null and void, in other terms resources will be removed along with contract expiration.
+
+In Cloud computing world everything is shared. You are not owning anything so no set up at your location,
+only you have the links to reach. You can use resources however you want. if you are not using it, 
+resources will not get null and void as resources are shared. Same resources can and must be used by someone else.
+Cloud allows same resource usage by many.
+
+Traditional computing is INTERNAL Tables and Cloud Computing is EXTERNAL tables.
+
+INTERNAL TABLES:
+
+1. Table created is also called MANAGED table.
+2. In case MANAGED tables are dropped, data will be also trashed out from HDFS.
+3. DO Not use INTERNAL table schema on top of SHARED data.
+4. Not recommended for PRODUCTION.
+5. By default table creation is INTERNAL Table.
+
+
+EXTERNAL TABLES:
+
+1. These are equivalent to cloud in our analogy, Do everything but hold nothing.
+2. If you select data in these EXTERNAL tables you will get results.
+3. If you DELETE some rows from tables and do SELECT, you won't see the deleted data.
+4. However If you go to HDFS location from where data is loaded and search for the deleted row, 
+you will find them in file as EXTERNAL tables are virtual schema on top of file data.
+5. Its just an schema and if you make changes in data at table level, you can see the changes in table
+but at file level no changes are propagated i.e. METASTORE is taking care of table changes,
+REAL file is not touched at all.
+5. If REAL file is not touched at all, it is TRUE virtualisation and many clients can use it for analysis purpose.
+6. As WRITE ONCE and READ many times is MANTRA of HADOOP, so EXTERNAL Tables are the right tables to create.
+
+
+Practice:
+
+Before start creating Tables, lets ponder on some points:
+
+1. Table can be created in two ways:
+
+     A. Create table schema and load data in it, in other words move data from its location to                warehouse directory.
+
+          Hive provides LOAD DATA [LOCAL] INPATH command for this purpose.
+   
+     B. Create table schema on top of exiting data, so effectively you are moving table creation logic to   the place where data resides, you are not moving the data.
+
+        LOCATION command should be used for this during table creation.
+
+2. Table creation from LOCAL cause file copy from LOCAL to HDFS, however table creation using HDFS file cause movement of data within HDFS only i.e. mv command is invoked.
+
+3. DATA Set up :
+
+        Download data from this location for this exp: Download.zip
+     
+        Remove the header line from data ( first line of the file ) keep the file somewhere in your local, and put a copy of the same in HDFS using put command as well.
+   
+        in my system, I have file LOCALLY at ''/home/sushil/bigadata/hivedata/geolocation.csv' and in HDFS at /hive/data/
+
+
+INTERNAL tables:
+
+CREATE TABLE geolocation 
+( truckid String, driverid String ,event String ,latitude double,
+longitude double,city String ,state String ,velocity int,event_ind int ,idling_ind int )
+COMMENTS 'An example for internal table creation' 
+ROW FORMAT DELIMITED 
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE;
+
+
+2. Load data from the file:
+
+
+LOAD DATA LOCAL INPATH '/home/sushil/bigadata/hivedata/geolocation.csv' OVERWRITE INTO TABLE geolocation;
+
+
+3. View data :
+
+SELECT * FROM geolocation limit 100;
+
+4. Check where file is in HDFS:
+
+go to /user/hive/warehouse/movielens.db/geolocation/ location.
+
+here movielens is my database in hive.
+
+you should see a file name geolocation.csv is created.
+
+so literally hadoop fs put command is invoked in case of in LOAD from local.
+
+
+EXTERNAL table:
+
+CREATE EXTERNAL TABLE geolocation_ext 
+( truckid String, driverid String ,event String ,latitude double,
+longitude double,city String ,state String ,velocity int,event_ind int ,idling_ind int ) 
+COMMENTS 'An example for external table creation'
+ROW FORMAT DELIMITED 
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/hive/data/geolocation.csv'
+
+2. Load data from the file:
+
+DATA is already loaded as we have provided LOCATION during data table creation, so instead of data movement, SCHEMA is moved, i.e. schema is created on TOP of data. 
+
+3. View data :
+
+SELECT * FROM geolocation_ext limit 100;
+
+4. Check where file is in HDFS:
+
+go to /user/hive/warehouse/movielens.db/ location.
+
+here movielens is my database in hive.
+
+you should not see any folder named geolocation_ext created as file is not moved.
+
+File would be available at its original location: /hive/data/geolocation.csv'
+
+We have one more kind of TABLE named TEMPORARY table, request you to practice it as well.
