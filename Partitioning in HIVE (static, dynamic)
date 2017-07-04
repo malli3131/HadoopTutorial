@@ -1,0 +1,165 @@
+
+Let's start with understanding partitioning using a simple example.
+
+The recently concluded MMR ( April, 2017 ) vaccination in INDIA data is fed to the central system.
+Now task is to get state wise vaccination %ge.
+
+There are two possible ways to do this activity:
+
+1. Scan through complete data set each and every time with where clause of each state name and get the %ge.
+
+How the performance would be? The task would take hours might be days as we have 29 states and around 45 cr of rows.
+It require 29 times scanning of 45 cr rows to get result.
+
+2. While feeding the data create 29 folders for each state and ask each state to feed data in their respective folder only. 
+sounds smart. 
+
+Now task is reduced, to just scan one folder at a time to get respective state data 
+and can be done in parallel as data set is small and segregated.
+
+This intelligent way of grouping data during data load is termed as PARTITIONING in hive.
+
+Now the simple question, if you are scanning through the KARNATAKA data,
+do we get any data other than KARNATAKA state data in that folder.
+
+if your answer is no than you answered the simple fact around partitioned table.
+While creating partitioned table no need to include partitioned column in TABLE DEFINITION 
+as it will taken care by PARTITIONED column.
+
+in our above example no need to add partitioned column 'state' in table definition.
+In other words HIVE says, please do not add partitioned column in table as I can intelligently scan through
+the folder to get the value.
+
+If you add partitioned column as a field in create table statement, it will be overkill and
+HIVE will not allow it so will throw exception.   
+
+
+Partition is of two types:
+
+1. STATIC PARTITION: User himself mentioning the segregation unit, either via using values of any one columns
+of the file to be loaded or creating virtual column(not part of the file) with values.
+
+2. DYNAMIC PARTITION: User is just mentioning the column, on which partition is required.
+REST is taken care by hive itself. It will create segregation units based on the distinct column values.
+
+
+Points to Ponder:
+
+1. STATIC PARTITIONING means each and every thing is controlled by user,
+starting from mentioning the PARTITION column to loading data in that partitioned folder.
+
+2. If Static partition is done over STATE column of MMR data and by mistake the data for CHHATTISGARH is 
+placed inside KARNATAKA partition while loading, we will get 0 results for CHHATTISGARH. 
+Reason being select on STATIC partition just look for the partition name, not inside the file data.
+
+3. DYNAMIC PARTITIONING means hive will intelligently get the distinct values for partitioned column and segregate data.
+As hive is doing it there are few things to take care:
+
+A. By default dynamic partitioning is enabled in HIVE.
+
+B. By default it is strict means you require to do one level of STATIC partitioning 
+before HIVE can do DYNAMIC partitioning inside this STATIC segregation units.
+
+C. To enable full dynamic partitioning, we have to set below property to nonstrict in hive.
+       
+              hive> set hive.exec.dynamic.partition.mode=nonstrcit
+
+D. By default number of partitions allowed for single node is 100 and cluster is 1000. 
+so if you are running in pseudo distributed mode with single node and you partitioned column cardinality is more than 100, 
+than set the below hive property as well.   
+      
+           hive> set hive.exec.max.dynamic.partitions.pernode=1000
+
+E. While creating STATIC partitioned table, you can directly load files into partitioned table as loading depends on user.
+However DYNAMIC partitioned table is handled by hive and hive doesn't know anything about file,
+we have to first load file in some temp table and than use that temp table to create dynamic partitioned table.
+ 
+
+Practice:
+
+Using same movie data for this as well.
+
+STATIC PARTITIONING:
+
+1. Create Table:
+
+                         CREATE EXTERNAL TABLE sp_ratings ( 
+                                           userid INT, 
+                                           movieid INT, 
+                                           tstamp BIGINT 
+                          ) PARTITIONED BY (rating INT)
+                            ROW FORMAT DELIMITED 
+                            FIELDS TERMINATED BY '#'
+                            STORED AS TEXTFILE; 
+
+2. Load partitioned data:
+            
+           LOAD DATA INPATH '/hive/data/rating' INTO TABLE sp_ratings PARTITION (rating=1)
+
+3. Verify data load:
+          
+        SELECT * from sp_ratings where rating = 1;
+
+Did you notice, It prints all data i.e. data with rating 2,3,4,5, as well. 
+
+is partitioning not working ? think over and put in comment.
+
+4. Verify file location:
+
+               hadoop fs -ls /user/hive/warehouse/movielens.db/sp_ratings/
+
+It should have folder named rating=1.
+
+
+DYNAMIC PARTITIONING:
+
+1. Create Table:
+
+                         CREATE EXTERNAL TABLE dp_ratings ( 
+                                           userid INT, 
+                                           movieid INT, 
+                                           tstamp BIGINT 
+                          ) PARTITIONED BY (rating INT)
+                            ROW FORMAT DELIMITED 
+                            FIELDS TERMINATED BY '#'
+                            STORED AS TEXTFILE; 
+
+2. Create TEMP table:
+              
+                        CREATE EXTERNAL TABLE temp_ratings ( 
+                                           userid INT, 
+                                           movieid INT,
+                                           rating INT, 
+                                           tstamp BIGINT 
+                          ) 
+                            ROW FORMAT DELIMITED 
+                            FIELDS TERMINATED BY '#'
+                            STORED AS TEXTFILE; 
+
+3. Load data in temp table from file:
+            
+           LOAD DATA LOCAL INPATH '/home/sushil/bigadata/hivedata/ratings' INTO TABLE temp_ratings;
+
+4. Load data in dynamic partitioned table:
+            
+           INSERT INTO TABLE dp_ratings PARTITION (rating) SELECT userid, movieid, tstamp,rating FROM temp_ratings;
+
+NOTE: The column order while select should be maintained except partitioned column,
+which should be selected last and if multiple they should be in creation order.
+
+5. Verify data load:
+          
+        SELECT * from sp_ratings where rating = 1;
+        SELECT * from sp_ratings where rating = 2;
+        SELECT * from sp_ratings where rating = 3;
+        SELECT * from sp_ratings where rating = 4;
+
+6. Verify file location:
+
+               hadoop fs -ls /user/hive/warehouse/movielens.db/dp_ratings/
+
+It should have folder named rating=1, rating=2 etc...
+
+
+
+if time permits will add combination of STATIC & DYNAMIC PARTITIONING. 
