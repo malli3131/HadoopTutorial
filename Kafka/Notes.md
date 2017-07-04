@@ -20,7 +20,7 @@ Apache Kafka
 * Kafka topic is a category to hold the messages from one application.
 * Kafka topic is a collection of partitions.
 * Kafka partition is a distributed element for data distribution in Kafka.
-* Kafka partition contains on ordered sequence of messages.
+* Kafka partition contains an immutable ordered sequence of messages.
 * Kafka partition stores in one more Kafka brokers in a replicated fashion.
 * Kafka message is a unit of data to store.
 * Kafka message contains key, value and timestamp.
