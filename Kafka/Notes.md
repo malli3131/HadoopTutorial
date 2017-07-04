@@ -1,5 +1,8 @@
 Apache Kafka
 ------------
+
+### Summary:
+
 * Apache Kafka is a distributed streaming platform.
 * It does three things:
   * Publish-subscribe - Messaging queue system
