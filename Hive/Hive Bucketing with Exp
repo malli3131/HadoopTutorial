@@ -1,0 +1,143 @@
+Before starting bucketing, its better to have idea around partitioning look for thr Hive Partitioning file in Github only.
+
+Hive partitioning ensures you have data segregation, which can fasten the data analysis process.
+
+In Hive partitioning, when we talked about creating partitions around states, we segregated data in 29 groups.
+
+After analysing data, Indian govt is interested in analysing how individual districts of each state has performed.
+
+quite a easy task, create partition inside partition i.e. divide each state into districts.   
+
+ CREATE EXTERNAL TABLE sp_MMR_data( 
+                                         area String, 
+                                           kidId long,
+                                          vaccinated boolean,
+                                       ) PARTITIONED BY (state String, district String)
+                            ROW FORMAT DELIMITED 
+                            FIELDS TERMINATED BY ','
+                            STORED AS TEXTFILE; 
+
+Each State folder will contain folders for each district. So far so good, 
+everyone is happy and INDIAN govt published the report in papers with each state and each district data.
+
+One state CM, read the paper and miffed with the low scores for his state summoned secretary with 
+the details of data at the level of areas in each city.
+
+To meet above requirement we can further partition the data using area code, but it can cause below 2 issues:
+
+1. One distrct can have multiple areas with very few kids details resulting in very small files 
+getting stored in HDFS. Which will result in not so good performance.
+
+2. Within a district there could be possibility of un even data distribution among areas, 
+which is again impact on the MR/Spark/Tez job performance.
+
+So what can be done here?
+Answer is why not divide the data in groups of areas i.e. group 5-10 areas of each district together.
+
+This grouping of data is termed as BUCKETING in HIVE world.
+
+Practice:
+
+ CREATE EXTERNAL TABLE sp_buck_MMR_data( 
+                                         area String, 
+                                           kidId long,
+                                           vaccinated boolean, 
+                                       ) PARTITIONED BY (state String, district String)
+                            CLUSTERED BY (area String) INTO 5 buckets
+                                ROW FORMAT DELIMITED 
+                            FIELDS TERMINATED BY ','
+                            STORED AS TEXTFILE; 
+
+All good, table created with partition and buckets, lets load data.
+
+Create data file locally with below data:
+
+vim MMRdata.txt;
+
+Bellandur,1,Y,Bangalore,KA
+Yelhanka,2,Y,Bangalore,KA
+Yelhanka,3,Y,Bangalore,KA
+Bellandur,4,Y,Bangalore,KA
+Kudulu,5,Y,Bangalore,KA
+HSR,6,Y,Mangalore,KA
+HSR,7,Y,Mangalore,KA
+Kudulu,8,Y,Bangalore,KA
+Yelhanka,9,Y,Bangalore,KA
+Yelhanka,10,Y,Bangalore,KA
+KRPuram,11,Y,Bangalore,KA
+KRPuram,12,Y,Bangalore,KA
+KRPuram,13,Y,Bangalore,KA
+HSR,14,Y,Mangalore,KA
+Kudulu,15,Y,Bangalore,KA
+Bellandur,16,Y,Bangalore,KA
+Bellandur,17,Y,Bangalore,KA
+Bellandur,18,Y,Bangalore,KA
+Harlur,19,Y,Bangalore,KA
+Harlur,20,Y,Bangalore,KA
+Harlur,21,Y,Bangalore,KA
+Harlur,22,Y,Bangalore,KA
+Yelhanka,23,Y,Bangalore,KA
+Yelhanka,24,Y,Bangalore,KA
+HSR,25,Y,Mangalore,KA
+KRPuram,26,Y,Bangalore,KA
+HSR,27,Y,Mangalore,KA
+Bellandur,28,Y,Bangalore,KA
+Bellandur,29,Y,Bangalore,KA
+Bellandur,30,Y,Bangalore,KA
+Yelhanka,32,Y,Bangalore,KA
+
+Create Temp table to load data ( think of reason why to load in temp table ):
+
+CREATE EXTERNAL TABLE temp_MMR_data (
+                        area STRING,
+                        kidId int,
+                        vaccinated String,
+                        city string,
+                        state string )
+                        ROW FORMAT DELIMITED
+                        FIELDS TERMINATED BY ','
+                        STORED AS TEXTFILE;
+
+Load file data in temp table;
+ 
+LOAD DATA LOCAL INPATH '/home/sushil/MMRData.txt' INTO TABLE temp_MMR_data;
+
+Load data in PARTITIONED AND BUCKETED Table:
+
+INSERT OVERWRITE TABLE dp_buck_MMR_data PARTITION (city, state)
+SELECT area, kidId, vaccinated, city, state from temp_mmr_data;
+
+Verify load is successful by qurying the table:
+
+select * from dp_buck_MMR_data;
+
+
+
+Verify the file system:
+
+you must be seeing folder structure like below in HDFS path
+
+
+
+/user/hive/warehouse/hadoop.db/dp_mmr_data/city=Bangalore/state=KA/
+
+state=KA – first level of partition
+
+city=Bangalore/Mangalore – second level of partition
+
+
+
+Within each city you must be seeing five files, which correspond to five buckets we created.
+
+
+How hive decides which area will go to which bucket?
+
+The simple algo is:
+
+(hashcode of the area) % (no of buckets users requested) = bucket id
+
+
+
+For the areas for which its hash code % buckets value is same, those all areas will go to the same bucket.
+
+
