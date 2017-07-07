@@ -1,0 +1,177 @@
+Name says User Defined functions., I would rather name it to User Controlled Functionality (UCF).
+
+Now if user is controlling/Defining it, means it is the user, who only decides what to do in function, and unfortunately Hive is written in java so user has to control Hive via java only.
+
+So if you want to write any UDFs, you have to write java code, and its damn simple.
+
+Before starting writing UDFs, question must be coming in mind why we require UDFs ?
+
+Answer is simple:
+
+Arrange Marriage vs Love Marriage
+
+Arrange Marriage:
+1. Pre-defined 
+2. and controlled by parents 
+3. means you do not have to worry about it, just have to do it.
+
+Love Marriage : First think of your requirements.
+1. kind of girl you want.
+2. than after finding her/him, think of ways to woo her/him.
+3. once wooed, than both start talking to parents for permissions,
+4. and etc. etc. etc.
+
+First one quite easy, isn't it ? that is the parent defined marriage (PDM), here parent is hive and anything built into(by) hive, we can directly use it.All Good, work done and no pain.
+
+But we are adventurous, we want to define and control each and every thing of our partner, how can parents impose anyone on us or might be parents(Hive) can't understand my requirement. Go ahead man, take the pain and write all you requirement specific logic. all pain and lots of gain.
+
+So I can say UDFs are required when:
+User requirement can't be served or partially served by existing hive functions, than to achieve that functionality, we write our own function and that is called UDFs.
+
+Lets start writing UDFs, I am using ECLIPSE IDE to write UDFs.
+
+My requirement is wherever student got marks between 31 to 32  make it 33 ( give 1-2 grace marks to pass student ) 
+
+Data Setup:
+
+create a marks.txt in your local with below data:
+
+sushil 31 Maths
+Sushil 50 Phy
+Sushil 10 Che
+Kumar 31 Maths
+KUmar 100 Phy
+Kumar 30 Che
+Madwani 32 Maths
+Madwani 40 Phy
+Madwani 50 Che
+Naga 20 Maths
+Naga 40 Phy
+Naga 33 Che
+Malli 10 Maths
+Malli 50 Phy
+Malli 60 Che
+Rajesh 70 Maths
+Rajesh 90 Phy
+Rajesh 32 Che
+Kumar 50 Maths
+Kumar 60 Phy
+Kumar 70 Che
+Subhijit 100 Maths
+Subhijit 90 Phy
+Subhijit 20 Che
+Asha 31 Maths
+Asha 32 Phy
+Asha 33 Che
+
+2. Table Creation and data load:
+
+CREATE TABLE udf_test ( name string, marks int, subject string ) ROW FORMAT DELIMITED FIELDS TERMINATED BY ' ' STORED AS TEXTFILE;
+
+
+LOAD DATA LOCAL INPATH '/home/sushil/bigadata/hivedata/marks.txt' OVERWRITE INTO TABLE udf_test;
+
+3. Write UDF using java.
+
+1. Create a simple java project.
+
+2. Add Hive Jars in the classpath from downloaded hive/lib folder.
+
+3. Crate a class, lets name it Give1OR2GraceMarks which is extending hive UDF class.
+
+package com.sushil;
+
+import org.apache.hadoop.hive.ql.exec.UDF;
+
+public class Give1OR2GraceMarks extends UDF {
+	public int evaluate(int value) {
+		if(value >30 && value < 33){
+			value=33;
+		}
+		return value;
+	}
+}
+
+4. right click on class and export as jar. I have given the jar name as same Give1OR2GraceMarks.jar
+ 
+
+Now Girl/Boy is wooed ( UDF logic is written), next have to convince parents. here our parent is hive and we have to convince Hive to let us associate UDFs with hive. For that we have to do below :
+
+1. add logic (jar) to the hive.
+
+     hive> add jar /home/sushil/bigadata/hivedata/Give1OR2GraceMarks.jar;
+
+The above command will add the jar into classpath.
+
+2. create a temporary hive function for this for above functionality.
+
+    hive> CREATE TEMPORARY FUNCTION GRACE AS 'com.sushil.Give1OR2GraceMarks';
+
+3. run the select command on table data
+
+    hive> select name, GRACE(marks), subject from udf_test;
+
+4. If all good, you see in the results for all the students whose marks were 31 or 32 got 1 or 2 grace marks.
+
+sushil	33	Maths
+Sushil	50	Phy
+Sushil	10	Che
+Kumar	33	Maths
+KUmar	100	Phy
+Kumar	30	Che
+Madwani	33	Maths
+Madwani	40	Phy
+Madwani	50	Che
+Naga	20	Maths
+Naga	40	Phy
+Naga	33	Che
+Malli	10	Maths
+Malli	50	Phy
+Malli	60	Che
+Rajesh	70	Maths
+Rajesh	90	Phy
+Rajesh	33	Che
+Kumar	50	Maths
+Kumar	60	Phy
+Kumar	70	Che
+Subhijit	100	Maths
+Subhijit	90	Phy
+Subhijit	20	Che
+Asha	33	Maths
+Asha	33	Phy
+Asha	33	Che
+
+
+Do remember, this function will change data values temporally, if you see file in warehouse, you will see after querying no data changes.
+
+hadoop fs -cat /user/hive/warehouse/hadoop.db/udf_test/marks.txt 
+
+Result should be:
+
+sushil 31 Maths
+Sushil 50 Phy
+Sushil 10 Che
+Kumar 31 Maths
+KUmar 100 Phy
+Kumar 30 Che
+Madwani 32 Maths
+Madwani 40 Phy
+Madwani 50 Che
+Naga 20 Maths
+Naga 40 Phy
+Naga 33 Che
+Malli 10 Maths
+Malli 50 Phy
+Malli 60 Che
+Rajesh 70 Maths
+Rajesh 90 Phy
+Rajesh 32 Che
+Kumar 50 Maths
+Kumar 60 Phy
+Kumar 70 Che
+Subhijit 100 Maths
+Subhijit 90 Phy
+Subhijit 20 Che
+Asha 31 Maths
+Asha 32 Phy
+Asha 33 Che
