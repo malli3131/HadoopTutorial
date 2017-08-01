@@ -48,3 +48,14 @@ Kafka has several shell scripts to run several commands related topics, producer
 * zookeeper-shell.sh
 * kafka-replay-log-producer.sh
 
+
+### kafka-topics.sh: 
+It is used to create, list, describe, delete and manage kafka topics.
+
+```
+1. Listing Kafka topics:
+  $KAFKA_HOME/bin/kafka-topics.sh --list --zookeeper localhost:2181
+
+2. Creating Kafka topics:
+  $KAFKA_HOME/bin/kafka-topics.sh --create --partitions 5 --replication-factor 1 --topic stocks --zookeeper localhost:2181
+```
