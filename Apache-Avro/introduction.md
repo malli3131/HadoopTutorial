@@ -8,3 +8,4 @@ In Apache Avro, schema is associated for both read and write.
 Avro data is always together with the Schema.
 
 
+### Avro Schema
