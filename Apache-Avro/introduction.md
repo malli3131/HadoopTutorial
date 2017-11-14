@@ -1,1 +1,2 @@
-### Apache Avro is a serialization framework
+### Apache Avro 
+* Avro is a data serialization framework
