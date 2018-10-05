@@ -1,6 +1,6 @@
 ## Python Avro Example:
 
-#### Install Python Avro:
+#### Install Python Avro Client:
 
 ```
   1. Download the Avro Python Client from Apache Website:
