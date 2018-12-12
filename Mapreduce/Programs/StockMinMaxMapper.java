@@ -10,13 +10,6 @@ import org.apache.hadoop.mapreduce.Mapper;
 
 
 public class StockMinMaxMapper extends Mapper<LongWritable, Text, Text, DoubleWritable>
-
-	/**
-	 * @param args
-	 * @author Nagamallikarjuna
-	 * @throws IOException
-	 */
-	
 {
 	int processColumn = 0;
 	public void setup(Context context)
