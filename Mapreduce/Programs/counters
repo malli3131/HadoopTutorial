@@ -1,3 +1,4 @@
+In MapReduce, every job has job specific statistics about the job. These statistics include the following detials:
 18/12/12 20:22:38 INFO mapreduce.Job: Running job: job_1544090828621_410836
 18/12/12 20:22:43 INFO mapreduce.Job: Job job_1544090828621_410836 running in uber mode : false
 18/12/12 20:22:43 INFO mapreduce.Job:  map 0% reduce 0%
