@@ -16,13 +16,6 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
 public class StockVolumeAvgSum {
-
-	/**
-	 * @param args
-	 * @author Nagamallikarjuna
-	 * @throws IOException
-	 */
-
 	public static class MyMapper extends Mapper<LongWritable, Text, Text, LongWritable>{
 		Text kword = new Text();
 		LongWritable vword = new LongWritable();
