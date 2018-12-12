@@ -1,0 +1,61 @@
+HDFS Commands:
+--------------
+> fs – Generic Filesystem Client
+> dfs - Distributed File system client
+
+Facts about HDFS:
+-----------------
+In HDFS, the data is organized as blocks, blocks are stored in replicated fashion across data nodes.
+In HDFS, the default block replication is 3 i.e., thre different data nodes.
+HDFS behaves Linux like file system through its POSIX capabilities.
+In HDFS, File system starts with root i.e., "/".
+HDFS file system protocol is hdfs://
+HDFS consider Linux users and groups.
+In HDFS, every user has home directory like linux HOME i.e., /user/$USER.
+In HDFS, directory is empty file and replication factor is not applicable.
+In HDFS, every & directory has file permissions to restict the data access.
+
+fs/dfs is the command to execute file system operations like directory creation, renaming files,
+copying files, removing, displaying files, etc. It offers several command options, some of them are below
+
+fs is associated with hadoop shell script whereas dfs is associated with hdfs shell script. Both have a bunch of command options.
+Some of them are below:
+
+ls : To list the files and directories
+     Cmd> hadoop fs -ls /
+     Descption: This command lists all the files & directories under the root directory of HDFS.
+
+mkdir: To create directories in HDFS.
+      Cmd> hadoop fs -mkdir /data
+      Description: It creates a directory data under the root of HDFS.
+      
+put : To load the files from local file system to HDFS
+      Cmd> hadoop fs -put stocks /data
+      Description: Load the stocks file from local system to HDFS directory /data
+      
+get : To load the files from HDFS to local file system
+      Cmd> hadoop fs -get /data/stocks groups
+      Descrpiton: Load the stocks file from HDFS /data/stocks to local file system under specified path.
+      
+cat : Prints the data over STDOUT i.e., console.
+      Cmd> hadoop fs -cat /data/stocks
+      Description: It displays the content of stocks file in stdout
+      
+tail : Prints last 1KB of the file.
+      Cmd> hadoop fs -tail /data/stocks
+      Description: It displays the last 1KB content of stocks file
+      
+cp : Copies the file or directory from one HDFS path to another HDFS path.
+      Cmd> hadoop fs -cp /data/stocks  /nyse/stocks
+      Description: This copies stocks file from /data to /nyse directory with in HDFS.
+      
+mv : Rename file or directory in HDFS
+     Cmd> hadoop fs -mv /data/groups /groups
+     Description: This moves/rename the file stocks /data/stocks to /data/stocks.csv
+     
+rm : To delete file or directory in HDFS
+     Cmd> hadoop fs -rm /nyse/stocks - to Delete file
+     Cmd> hadoop fs -rm -R /nyse - to delete directory
+There are many more command options to other file operations.
+There is a big list of HDFS commands to perform admin operations.
+
