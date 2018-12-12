@@ -12,13 +12,6 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.util.GenericOptionsParser;
 
 public class WriteHDFS {
-
-	/**
-	 * @param args
-	 * @author Nagamallikarjuna
-	 * @throws URISyntaxException 
-	 * @throws IOException 
-	 */
 	public static void main(String[] args) throws IOException, URISyntaxException {	
 		Configuration conf = new Configuration();
 		String otherArgs[] = new GenericOptionsParser(args).getRemainingArgs();
@@ -36,5 +29,4 @@ public class WriteHDFS {
 		out.close();
 		in.close();
 	}
-
 }
