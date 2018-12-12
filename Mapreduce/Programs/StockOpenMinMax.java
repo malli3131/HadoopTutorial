@@ -54,7 +54,6 @@ public static class MyMapper extends Mapper<LongWritable, Text, Text, DoubleWrit
 			context.write(key, vword);
 		}
 	} 
-}
 	public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
 		Configuration conf = new Configuration();
 		String otherArgs[] = new GenericOptionsParser(conf, args).getRemainingArgs();
@@ -79,3 +78,4 @@ public static class MyMapper extends Mapper<LongWritable, Text, Text, DoubleWrit
 		
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
 	}
+}
