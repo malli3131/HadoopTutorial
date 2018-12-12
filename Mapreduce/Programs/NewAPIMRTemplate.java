@@ -15,38 +15,41 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
-public class NewAPIMRTemplate {
-
-	/**
-	 * @param args
-	 * @author Nagamallikarjuna
-	 * @throws IOException
-	 */
-	
+public class MRTemplate {
 	public static class MyMapper extends Mapper<LongWritable, Text, Text, IntWritable>
 	{
+		public void setup(Context context) throws IOException{
+			//Initialize all the variables which are used in map method
+		}
 		public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException
 		{
-			//Map side Business Logic
+			//Map side Business Logic i.e., Data Transformations
+		}
+		public void cleanup(Context context) throws IOException{
+			//Close all the variables which are used in map method
 		}
 	}
 	
 	public static class MyReducer extends Reducer<Text, IntWritable, Text, LongWritable>
 	{
-		
+		public void setup(Context context) throws IOException{
+			//Initialize all the variables which are used in reduce method
+		}
 		public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException
 		{
-			//Reduce side Business Logic
+			//Reduce side Business Logic i.e., Data Aggregations
+		}
+		public void cleanup(Context context) throws IOException{
+			//Close all the variables which are used in reduce method
 		}
 	}
 	
 	public static void main(String args[]) throws IOException, InterruptedException, ClassNotFoundException
 	{
 		Configuration conf = new Configuration();
+		Job job = new Job(conf, "Name of the MapReduce Job");
 		
-		Job job = new Job(conf, "Finding the total stock volumes");
-		
-		job.setJarByClass(NewAPIMRTemplate.class);
+		job.setJarByClass(MRTemplate.class);
 		
 		job.setMapperClass(MyMapper.class);
 		job.setReducerClass(MyReducer.class);
@@ -64,7 +67,5 @@ public class NewAPIMRTemplate {
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 		
 		System.exit(job.waitForCompletion(true) ? 0 :1);
-		
 	}
-
 }
