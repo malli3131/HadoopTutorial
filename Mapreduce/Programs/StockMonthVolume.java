@@ -23,45 +23,6 @@ import org.apache.hadoop.mapred.TextInputFormat;
 import org.apache.hadoop.mapred.lib.MultipleTextOutputFormat; 
 
 public class StockMonthVolume { 
-
-	/** 
-	 * @param args 
-	 * @author Nagamallikarjuna
-	 * @throws IOException 
-	 * @throws InterruptedException 
-	 * @throws ClassNotFoundException 
-	 */ 
-	public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException { 
-		Configuration conf = new Configuration(); 
-		JobConf job = new JobConf(conf); 
-
-		job.setJobName("Finding Avg and Sum of Stock Volume"); 
-
-		job.setJarByClass(StockMonthVolume.class); 
-		//Mapper and Reducer classes 
-		job.setMapperClass(MyMapper.class); 
-		job.setReducerClass(MyReducer.class); 
-
-		//Output Key-Value Data types 
-		job.setMapOutputKeyClass(Text.class); 
-		job.setMapOutputValueClass(LongWritable.class); 
-
-		job.setOutputKeyClass(Text.class); 
-		job.setOutputValueClass(Text.class); 
-
-		//Inform Input/Output Formats 
-		job.setInputFormat(TextInputFormat.class); 
-		job.setOutputFormat(MyMultipleOutputFileFormat.class); 
-
-		//Inform file or Directory locations 
-		FileInputFormat.addInputPath(job, new Path(args[0])); 
-		FileOutputFormat.setOutputPath(job, new Path(args[1])); 
-
-		//Inform termination criteria 
-		JobClient.runJob(job); 
-
-	} 
-
 	//This is my Mapper Class 
 	public static class MyMapper extends MapReduceBase implements Mapper<LongWritable, Text, Text, LongWritable> 
 	{ 
@@ -110,5 +71,34 @@ public class StockMonthVolume {
 		{ 
 			return new Path(key.toString(), value.toString()).toString(); 
 		} 
+	} 
+	public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException { 
+		Configuration conf = new Configuration(); 
+		JobConf job = new JobConf(conf); 
+
+		job.setJobName("Finding Avg and Sum of Stock Volume"); 
+
+		job.setJarByClass(StockMonthVolume.class); 
+		//Mapper and Reducer classes 
+		job.setMapperClass(MyMapper.class); 
+		job.setReducerClass(MyReducer.class); 
+
+		//Output Key-Value Data types 
+		job.setMapOutputKeyClass(Text.class); 
+		job.setMapOutputValueClass(LongWritable.class); 
+
+		job.setOutputKeyClass(Text.class); 
+		job.setOutputValueClass(Text.class); 
+
+		//Inform Input/Output Formats 
+		job.setInputFormat(TextInputFormat.class); 
+		job.setOutputFormat(MyMultipleOutputFileFormat.class); 
+
+		//Inform file or Directory locations 
+		FileInputFormat.addInputPath(job, new Path(args[0])); 
+		FileOutputFormat.setOutputPath(job, new Path(args[1])); 
+
+		//Inform termination criteria 
+		JobClient.runJob(job); 
 	} 
 }
