@@ -1,5 +1,5 @@
 
-oject HDFSFileOperations extends Serializable {
+object HDFSFileOperations extends Serializable {
 def readHdfsFile(filePath:String) : Option[String] = {
     try{
       val path = new Path(filePath)
